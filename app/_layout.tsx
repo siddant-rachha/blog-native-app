@@ -7,10 +7,9 @@ export default function Layout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer>
         <Drawer.Screen
-          name="home"
+          name="index"
           options={{
             drawerLabel: "Home",
-            title: "Home",
             headerTitle: () => <HeaderWithSearch title="Home" />,
           }}
         />
@@ -19,7 +18,6 @@ export default function Layout() {
           name="create-post"
           options={{
             drawerLabel: "Create Post",
-            title: "Create Post",
             headerTitle: () => <HeaderWithSearch title="Create Post" />,
           }}
         />
@@ -28,7 +26,6 @@ export default function Layout() {
           name="my-posts"
           options={{
             drawerLabel: "My Posts",
-            title: "My Posts",
             headerTitle: () => <HeaderWithSearch title="My Posts" />,
           }}
         />

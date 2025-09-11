@@ -1,10 +1,25 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+
+const screenWidth = Dimensions.get("window").width;
 
 export default function HeaderWithSearch({ title }: { title: string }) {
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.headerTitle}>{title}</Text>
       <TextInput style={styles.searchInput} placeholder="Search..." />
+      <TouchableOpacity
+        style={styles.touchableOpacityButton}
+        onPress={() => {}}
+      >
+        <Text style={{ color: "white" }}>Login</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -13,21 +28,28 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    flex: 1,
+    paddingHorizontal: 12,
+    minHeight: 36,
+    width: screenWidth - screenWidth * 0.2, // 80% of screen width
+    position: "relative",
   },
   headerTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginRight: 16,
+    fontSize: 18,
+    marginRight: 12,
+    maxWidth: 120,
   },
   searchInput: {
     flex: 1,
-    height: 36,
-    borderColor: "#ccc",
     borderWidth: 1,
+    borderColor: "#ccc",
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: "#fff",
-    minWidth: 200,
+    marginRight: 12,
+  },
+  touchableOpacityButton: {
+    padding: 8,
+    borderRadius: 4,
+    borderWidth: 1,
+    backgroundColor: "#007aff",
   },
 });
