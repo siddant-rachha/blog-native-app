@@ -1,15 +1,5 @@
-import { Text, View } from "react-native";
+import CreatePost from "@/pages/CreatePost";
 
-export default function CreatePost() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Create Post</Text>
-    </View>
-  );
+export default function CreatePostRoute() {
+  return <CreatePost />;
 }

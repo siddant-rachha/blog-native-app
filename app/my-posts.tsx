@@ -1,15 +1,5 @@
-import { Text, View } from "react-native";
+import MyPosts from "@/pages/MyPosts";
 
-export default function MyPosts() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>My Posts</Text>
-    </View>
-  );
+export default function MyPostsRoute() {
+  return <MyPosts />;
 }

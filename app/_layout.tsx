@@ -1,35 +1,14 @@
-import { Drawer } from "expo-router/drawer";
+// app/_layout.tsx
+import DrawerWithListener from "@/components/DrawerWithListener";
+import { GlobalStateProvider } from "@/globalState/Providers/GlobalStateContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import HeaderWithSearch from "../components/HeaderWithSearch";
 
 export default function Layout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Drawer>
-        <Drawer.Screen
-          name="index"
-          options={{
-            drawerLabel: "Home",
-            headerTitle: () => <HeaderWithSearch title="Home" />,
-          }}
-        />
-
-        <Drawer.Screen
-          name="create-post"
-          options={{
-            drawerLabel: "Create Post",
-            headerTitle: () => <HeaderWithSearch title="Create Post" />,
-          }}
-        />
-
-        <Drawer.Screen
-          name="my-posts"
-          options={{
-            drawerLabel: "My Posts",
-            headerTitle: () => <HeaderWithSearch title="My Posts" />,
-          }}
-        />
-      </Drawer>
-    </GestureHandlerRootView>
+    <GlobalStateProvider>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <DrawerWithListener />
+      </GestureHandlerRootView>
+    </GlobalStateProvider>
   );
 }

@@ -1,3 +1,4 @@
+import { useGlobalState } from "@/globalState/useGlobalState";
 import {
   Dimensions,
   StyleSheet,
@@ -10,10 +11,19 @@ import {
 const screenWidth = Dimensions.get("window").width;
 
 export default function HeaderWithSearch({ title }: { title: string }) {
+  const {
+    selectors: { searchInput },
+    actions: { setSearchInput },
+  } = useGlobalState();
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.headerTitle}>{title}</Text>
-      <TextInput style={styles.searchInput} placeholder="Search..." />
+      <TextInput
+        value={searchInput}
+        onChangeText={setSearchInput}
+        style={styles.searchInput}
+        placeholder="Search..."
+      />
       <TouchableOpacity
         style={styles.touchableOpacityButton}
         onPress={() => {}}
@@ -45,12 +55,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginRight: 12,
-    color: "black"
+    color: "black",
   },
   touchableOpacityButton: {
     padding: 8,
     borderRadius: 4,
     borderWidth: 1,
     backgroundColor: "#007aff",
+    borderColor: "#007aff",
   },
 });
