@@ -1,25 +1,22 @@
+import { Post } from "@/types/commonTypes";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface CardProps {
-  title: string;
-  image: string;
-  description: string;
-  date: string;
-}
-
-export default function CardComponent({ item }: { item: CardProps }) {
+export default function CardComponent({ postItem }: { postItem: Post }) {
   return (
     <View style={styles.card}>
       {/* title */}
-      <Text style={styles.title}>{item.title}</Text>
+      <Text style={styles.title}>{postItem.title}</Text>
 
       {/* image */}
-      <Image source={{ uri: item.image }} style={styles.image} />
+      <Image source={{ uri: postItem.imageUrl }} style={styles.image} />
 
       <View style={styles.authorContainer}>
         {/* author round icon */}
-        <Image source={{ uri: item.image }} style={styles.authorImage} />
+        <Image
+          source={{ uri: postItem.authorPic }}
+          style={styles.authorImage}
+        />
 
         {/* author name and date container*/}
         <View>
@@ -39,7 +36,7 @@ export default function CardComponent({ item }: { item: CardProps }) {
       </View>
 
       {/* description */}
-      <Text>{item.description}</Text>
+      <Text>{postItem.desc}</Text>
 
       {/* button */}
       <TouchableOpacity onPress={() => {}} style={styles.touchableButton}>
