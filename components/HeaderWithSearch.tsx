@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 8,
     marginRight: 12,
+    color: "black"
   },
   touchableOpacityButton: {
     padding: 8,

@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "blog-native-app",
+    "name": "Blog Native App",
     "slug": "blog-native-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/blog-native-app-icon.png",
     "scheme": "blognativeapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
