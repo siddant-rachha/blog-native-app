@@ -1,6 +1,7 @@
 import { useGlobalState } from "@/globalState/useGlobalState";
+import { MaterialIcons } from "@expo/vector-icons";
+import { ComponentProps } from "react";
 import {
-  Dimensions,
   StyleSheet,
   Text,
   TextInput,
@@ -8,9 +9,16 @@ import {
   View,
 } from "react-native";
 
-const screenWidth = Dimensions.get("window").width;
+// Infer the `name` prop type from MaterialIcons
+type MaterialIconName = ComponentProps<typeof MaterialIcons>["name"];
 
-export default function HeaderWithSearch({ title }: { title: string }) {
+export default function HeaderWithSearch({
+  title,
+  materialIcon,
+}: {
+  title: string;
+  materialIcon: MaterialIconName;
+}) {
   const {
     selectors: { searchInput },
     actions: { setSearchInput },
@@ -18,6 +26,12 @@ export default function HeaderWithSearch({ title }: { title: string }) {
   return (
     <View style={styles.headerContainer}>
       <Text style={styles.headerTitle}>{title}</Text>
+      <MaterialIcons
+        name={materialIcon}
+        size={24}
+        color="black"
+        style={{ marginRight: 12 }}
+      />
       <TextInput
         value={searchInput}
         onChangeText={setSearchInput}
@@ -39,15 +53,12 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 12,
     minHeight: 36,
-    width: screenWidth - screenWidth * 0.2, // 80% of screen width
     position: "relative",
   },
   headerTitle: {
-    fontSize: 18,
-    marginRight: 12,
-    maxWidth: 120,
+    fontSize: 16,
+    marginRight: 6,
   },
   searchInput: {
     flex: 1,

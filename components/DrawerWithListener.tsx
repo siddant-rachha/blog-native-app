@@ -1,7 +1,9 @@
 import { useGlobalState } from "@/globalState/useGlobalState";
+import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigationContainerRef } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useEffect, useRef } from "react";
+import { View } from "react-native";
 import HeaderWithSearch from "./HeaderWithSearch";
 
 export default function DrawerWithListener() {
@@ -32,27 +34,47 @@ export default function DrawerWithListener() {
 
   return (
     <Drawer>
-      <Drawer.Screen
-        name="index"
-        options={{
-          drawerLabel: "Home",
-          headerTitle: () => <HeaderWithSearch title="Home" />,
-        }}
-      />
-      <Drawer.Screen
-        name="create-post"
-        options={{
-          drawerLabel: "Create Post",
-          headerTitle: () => <HeaderWithSearch title="Create Post" />,
-        }}
-      />
-      <Drawer.Screen
-        name="my-posts"
-        options={{
-          drawerLabel: "My Posts",
-          headerTitle: () => <HeaderWithSearch title="My Posts" />,
-        }}
-      />
+      {[
+        { name: "index", label: "Home", materialIcon: "home" as const },
+        {
+          name: "create-post",
+          label: "Create Post",
+          materialIcon: "post-add" as const,
+        },
+        { name: "my-posts", label: "My Posts", materialIcon: "book" as const },
+      ].map((screen) => (
+        <Drawer.Screen
+          key={screen.name}
+          name={screen.name}
+          options={({ navigation }) => ({
+            drawerIcon: ({ color, size }) => (
+              <MaterialIcons
+                name={screen.materialIcon}
+                size={size}
+                color={color}
+              />
+            ),
+            drawerLabel: screen.label,
+            headerTitle: () => (
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <HeaderWithSearch
+                  title={screen.label}
+                  materialIcon={screen.materialIcon}
+                />
+              </View>
+            ),
+            headerLeft: () => (
+              <MaterialIcons
+                name="menu"
+                size={18}
+                color="black"
+                style={{ marginLeft: 10, marginRight: 6 }}
+                onPress={() => navigation.toggleDrawer()}
+              />
+            ),
+          })}
+        />
+      ))}
     </Drawer>
   );
 }
