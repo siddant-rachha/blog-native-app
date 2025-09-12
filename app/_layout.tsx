@@ -1,4 +1,3 @@
-// app/_layout.tsx
 import DrawerWithListener from "@/components/DrawerWithListener";
 import { GlobalStateProvider } from "@/globalState/Providers/GlobalStateContext";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
