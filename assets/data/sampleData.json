@@ -1,0 +1,152 @@
+[
+  {
+    "title": "Exploring the Mountains",
+    "image": "https://picsum.photos/400/300?random=1",
+    "description": "A breathtaking view of the snowy mountain peaks during sunrise.",
+    "date": "2025-09-12"
+  },
+  {
+    "title": "City Lights",
+    "image": "https://picsum.photos/400/300?random=2",
+    "description": "Downtown skyline illuminated with dazzling city lights.",
+    "date": "2025-09-10"
+  },
+  {
+    "title": "Beach Escape",
+    "image": "https://picsum.photos/400/300?random=3",
+    "description": "Relaxing waves crashing against the shore on a peaceful evening.",
+    "date": "2025-09-08"
+  },
+  {
+    "title": "Forest Trail",
+    "image": "https://picsum.photos/400/300?random=4",
+    "description": "A serene walk through the lush green forest trail.",
+    "date": "2025-09-05"
+  },
+  {
+    "title": "Morning Coffee",
+    "image": "https://picsum.photos/400/300?random=5",
+    "description": "Starting the day with a warm cup of freshly brewed coffee.",
+    "date": "2025-09-01"
+  },
+  {
+    "title": "Cultural Festival",
+    "image": "https://picsum.photos/400/300?random=6",
+    "description": "Celebrating diversity with music, dance, and traditional food.",
+    "date": "2025-08-30"
+  },
+  {
+    "title": "Street Art Vibes",
+    "image": "https://picsum.photos/400/300?random=7",
+    "description": "Vibrant graffiti murals brightening up the urban streets.",
+    "date": "2025-08-28"
+  },
+  {
+    "title": "Camping Nights",
+    "image": "https://picsum.photos/400/300?random=8",
+    "description": "Starry skies above the quiet campsite in the woods.",
+    "date": "2025-08-25"
+  },
+  {
+    "title": "Gourmet Delights",
+    "image": "https://picsum.photos/400/300?random=9",
+    "description": "A chef’s plate with artistic presentation of fine dining.",
+    "date": "2025-08-22"
+  },
+  {
+    "title": "Historic Architecture",
+    "image": "https://picsum.photos/400/300?random=10",
+    "description": "A walk through ancient streets lined with old-world charm.",
+    "date": "2025-08-20"
+  },
+  {
+    "title": "Cycling Adventure",
+    "image": "https://picsum.photos/400/300?random=11",
+    "description": "Exploring countryside landscapes on a bicycle ride.",
+    "date": "2025-08-18"
+  },
+  {
+    "title": "Winter Wonderland",
+    "image": "https://picsum.photos/400/300?random=12",
+    "description": "Snow-covered trees and frozen lakes creating magical scenery.",
+    "date": "2025-08-15"
+  },
+  {
+    "title": "Desert Safari",
+    "image": "https://picsum.photos/400/300?random=13",
+    "description": "Golden sand dunes stretching endlessly into the horizon.",
+    "date": "2025-08-12"
+  },
+  {
+    "title": "Sunset Bliss",
+    "image": "https://picsum.photos/400/300?random=14",
+    "description": "An orange sky melting into the calm ocean waves.",
+    "date": "2025-08-10"
+  },
+  {
+    "title": "Bookstore Escape",
+    "image": "https://picsum.photos/400/300?random=15",
+    "description": "Cozy corners with shelves full of timeless stories.",
+    "date": "2025-08-08"
+  },
+  {
+    "title": "Urban Market",
+    "image": "https://picsum.photos/400/300?random=16",
+    "description": "Bustling stalls with colors, smells, and street food flavors.",
+    "date": "2025-08-06"
+  },
+  {
+    "title": "Ocean Adventure",
+    "image": "https://picsum.photos/400/300?random=17",
+    "description": "Diving deep into turquoise waters full of marine life.",
+    "date": "2025-08-04"
+  },
+  {
+    "title": "Road Trip Memories",
+    "image": "https://picsum.photos/400/300?random=18",
+    "description": "Endless highways and playlists with friends on the go.",
+    "date": "2025-08-01"
+  },
+  {
+    "title": "Spring Blooms",
+    "image": "https://picsum.photos/400/300?random=19",
+    "description": "Bright flowers covering the meadows in springtime.",
+    "date": "2025-07-29"
+  },
+  {
+    "title": "Hiking Peak",
+    "image": "https://picsum.photos/400/300?random=20",
+    "description": "Reaching the top of the trail with a rewarding view.",
+    "date": "2025-07-27"
+  },
+  {
+    "title": "Local Street Food",
+    "image": "https://picsum.photos/400/300?random=21",
+    "description": "Tasting authentic snacks from local food stalls.",
+    "date": "2025-07-25"
+  },
+  {
+    "title": "Island Getaway",
+    "image": "https://picsum.photos/400/300?random=22",
+    "description": "Turquoise waters surrounding a tropical island paradise.",
+    "date": "2025-07-22"
+  },
+  {
+    "title": "Rainy Day Reads",
+    "image": "https://picsum.photos/400/300?random=23",
+    "description": "Raindrops against the window while reading indoors.",
+    "date": "2025-07-20"
+  },
+  {
+    "title": "Concert Night",
+    "image": "https://picsum.photos/400/300?random=24",
+    "description": "Live music, bright lights, and an electric crowd.",
+    "date": "2025-07-18"
+  },
+  {
+    "title": "Farm Fresh",
+    "image": "https://picsum.photos/400/300?random=25",
+    "description": "Fields of greenery and fresh produce straight from the farm.",
+    "date": "2025-07-15"
+  }
+]
