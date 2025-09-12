@@ -23,6 +23,7 @@ export default function HeaderWithSearch({ title }: { title: string }) {
         onChangeText={setSearchInput}
         style={styles.searchInput}
         placeholder="Search..."
+        placeholderTextColor={"#888"}
       />
       <TouchableOpacity
         style={styles.touchableOpacityButton}
