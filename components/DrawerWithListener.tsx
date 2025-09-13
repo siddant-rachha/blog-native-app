@@ -68,7 +68,7 @@ export default function DrawerWithListener() {
                 name="menu"
                 size={24}
                 color="black"
-                style={{ marginLeft: 12, marginRight: 6 }}
+                style={{ marginLeft: 18, marginRight: 6 }}
                 onPress={() => navigation.toggleDrawer()}
               />
             ),

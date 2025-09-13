@@ -9,6 +9,7 @@ export function useToast() {
       text1: message,
       visibilityTime: 2000,
       position: "top",
+      topOffset: 70,
     });
   };
 
