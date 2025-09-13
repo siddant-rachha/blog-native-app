@@ -1,5 +1,6 @@
 import { postsApi } from "@/api/services/postsApi";
 import CardComponent from "@/components/CardComponent";
+import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
 import { Post } from "@/types/commonTypes";
 import { useCallback, useEffect, useState } from "react";
@@ -9,6 +10,7 @@ export default function Home() {
   const {
     actions: { setIsLoading },
   } = useGlobalState();
+  const { showToast } = useToast();
   const [posts, setPostsState] = useState<Post[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const setAllPosts = (allPosts: Post[] | undefined) => {
@@ -26,8 +28,10 @@ export default function Home() {
         post.desc = post.desc.slice(0, 150) + "...";
       });
       setAllPosts(posts);
+      showToast("Posts fetched successfully");
     } catch (error) {
       console.log("Error fetching posts:", error);
+      showToast("Something went wrong", "error");
     } finally {
       setIsLoading(false);
     }

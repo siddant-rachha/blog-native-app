@@ -66,9 +66,9 @@ export default function DrawerWithListener() {
             headerLeft: () => (
               <MaterialIcons
                 name="menu"
-                size={18}
+                size={24}
                 color="black"
-                style={{ marginLeft: 18, marginRight: 6 }}
+                style={{ marginLeft: 12, marginRight: 6 }}
                 onPress={() => navigation.toggleDrawer()}
               />
             ),
