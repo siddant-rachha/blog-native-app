@@ -1,4 +1,4 @@
-import { useGlobalState } from "@/globalState/useGlobalState";
+import { useGlobalState } from "@/store/context/useGlobalState";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigationContainerRef } from "expo-router";
 import { Drawer } from "expo-router/drawer";

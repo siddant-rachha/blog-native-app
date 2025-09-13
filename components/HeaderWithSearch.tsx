@@ -1,4 +1,4 @@
-import { useGlobalState } from "@/globalState/useGlobalState";
+import { useGlobalState } from "@/store/context/useGlobalState";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ComponentProps } from "react";
 import {

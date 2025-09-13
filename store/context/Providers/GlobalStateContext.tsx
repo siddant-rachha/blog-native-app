@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useState } from "react";
 
 type GlobalState = {
   searchInput: string;
+  isLoading: boolean;
 };
 
 type GlobalStateContextType = {
@@ -16,6 +17,7 @@ export const GlobalStateContext = createContext<
 export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<GlobalState>({
     searchInput: "",
+    isLoading: true,
   });
 
   return (

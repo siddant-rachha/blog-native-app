@@ -13,6 +13,7 @@ export const useGlobalState = () => {
 
   // Selectors
   const searchInput = state.searchInput;
+  const isLoading = state.isLoading;
 
   // Actions
   const setSearchInput = (value: string) => {
@@ -22,8 +23,15 @@ export const useGlobalState = () => {
     }));
   };
 
+  const setIsLoading = (value: boolean) => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: value,
+    }));
+  };
+
   return {
-    selectors: { searchInput },
-    actions: { setSearchInput },
+    selectors: { searchInput, isLoading },
+    actions: { setSearchInput, setIsLoading },
   };
 };

@@ -1,11 +1,16 @@
 import { postsApi } from "@/api/services/postsApi";
 import CardComponent from "@/components/CardComponent";
+import { useGlobalState } from "@/store/context/useGlobalState";
 import { Post } from "@/types/commonTypes";
-import { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { FlatList, RefreshControl, StyleSheet } from "react-native";
 
 export default function Home() {
+  const {
+    actions: { setIsLoading },
+  } = useGlobalState();
   const [posts, setPostsState] = useState<Post[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
   const setAllPosts = (allPosts: Post[] | undefined) => {
     if (allPosts) {
       setPostsState(allPosts);
@@ -14,6 +19,7 @@ export default function Home() {
 
   const getAllPosts = async () => {
     try {
+      setIsLoading(true);
       const res = await postsApi.getAll();
       const posts = res.posts;
       posts.map((post) => {
@@ -22,8 +28,16 @@ export default function Home() {
       setAllPosts(posts);
     } catch (error) {
       console.log("Error fetching posts:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await getAllPosts();
+    setRefreshing(false);
+  }, []);
 
   useEffect(() => {
     getAllPosts();
@@ -36,6 +50,9 @@ export default function Home() {
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => <CardComponent postItem={item} />}
       contentContainerStyle={{ paddingBottom: 32 }}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
     />
   );
 }
