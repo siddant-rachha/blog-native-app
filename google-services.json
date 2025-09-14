@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323603367096",
+    "project_id": "blog-web-app1",
+    "storage_bucket": "blog-web-app1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323603367096:android:ab3c433b87185ab376604d",
+        "android_client_info": {
+          "package_name": "com.sidr99.blognativeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323603367096-89ef4uui8jlvhv2f7lflio8klkmuimmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtcTa4f1Maq1cAZY6zZ38EAc1gz3t39t8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323603367096-89ef4uui8jlvhv2f7lflio8klkmuimmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
