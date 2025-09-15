@@ -13,7 +13,9 @@
     "local-build": "eas build:configure && eas build --platform android --profile production --local",
     "dev-client": "npx expo start --dev-client",
     "prebuild": "npx expo prebuild",
-    "prebuild-clean": "npx expo prebuild --clean"
+    "prebuild-clean": "npx expo prebuild --clean",
+    "encrypt-file": "read -s -p '🔐 Enter password to encrypt: ' pass && echo && openssl aes-256-cbc -salt -pbkdf2 -in FILE_NAME_FROM_ROOT_PATH -out ENCRYPTED_FILE_NAME -k \"$pass\" && echo '✅ file encrypted!'",
+    "decrypt-file": "read -s -p '🔐 Enter password to decrypt: ' pass && echo && openssl aes-256-cbc -d -pbkdf2 -in FILE_NAME_TO_DECRYPT_FROM_ROOT_PATH -out DECRYPTED_FILE_NAME -k \"$pass\" && echo '✅ file decrypted!'"
   },
   "dependencies": {
     "@expo/metro-runtime": "~6.1.2",
