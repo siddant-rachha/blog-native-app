@@ -1,10 +1,15 @@
+import { Screens } from "@/types/commonTypes";
 import React, { createContext, ReactNode, useState } from "react";
 
 type GlobalState = {
   searchInput: string;
   isLoading: boolean;
   user: any;
-  authToken: string | null;
+  currentScreen?: Screens;
+  confirmationModal: {
+    isOpen: boolean;
+    message: string;
+  };
 };
 
 type GlobalStateContextType = {
@@ -21,7 +26,10 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     searchInput: "",
     isLoading: true,
     user: null,
-    authToken: null,
+    confirmationModal: {
+      isOpen: false,
+      message: "Do you want to delete?",
+    },
   });
 
   return (

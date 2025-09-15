@@ -28,7 +28,7 @@ export default function HeaderWithSearch({
 }) {
   const {
     selectors: { searchInput, user },
-    actions: { setSearchInput, setIsLoading },
+    actions: { setSearchInput },
   } = useGlobalState();
   const [showUserInfo, setShowUserInfo] = useState(false);
   return (

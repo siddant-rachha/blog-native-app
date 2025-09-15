@@ -3,7 +3,13 @@ import { convertSecondsToDate } from "@/utils/convertSecondsToDate";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-export default function CardComponent({ postItem }: { postItem: Post }) {
+export default function CardComponent({
+  postItem,
+  onDelete,
+}: {
+  postItem: Post;
+  onDelete: () => void;
+}) {
   return (
     <View style={styles.card}>
       {/* title */}
@@ -36,7 +42,7 @@ export default function CardComponent({ postItem }: { postItem: Post }) {
             <TouchableOpacity onPress={() => {}}>
               <MaterialIcons name="edit" size={24} color={"#007BFF"} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => onDelete()}>
               <MaterialIcons
                 name="delete-outline"
                 size={24}

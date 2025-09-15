@@ -15,7 +15,7 @@ export const useGlobalState = () => {
   const searchInput = state.searchInput;
   const isLoading = state.isLoading;
   const user = state.user;
-  const authToken = state.authToken;
+  const modalConfirmation = state.confirmationModal;
 
   // Actions
   const setSearchInput = (value: string) => {
@@ -39,15 +39,19 @@ export const useGlobalState = () => {
     }));
   };
 
-  const setAuthToken = (value: string | null) => {
+  const setModalConfirmation = (isOpen: boolean, message?: string) => {
     setState((prev) => ({
       ...prev,
-      authToken: value,
+      confirmationModal: {
+        ...prev.confirmationModal,
+        isOpen,
+        ...(message ? { message } : {}),
+      },
     }));
   };
 
   return {
-    selectors: { searchInput, isLoading, user, authToken },
-    actions: { setSearchInput, setIsLoading, setUser, setAuthToken },
+    selectors: { searchInput, isLoading, user, modalConfirmation },
+    actions: { setSearchInput, setIsLoading, setUser, setModalConfirmation },
   };
 };

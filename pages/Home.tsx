@@ -2,14 +2,17 @@ import { postsApi } from "@/api/services/postsApi";
 import CardComponent from "@/components/CardComponent";
 import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
-import { Post } from "@/types/commonTypes";
+import { Post, Routes, RoutesKey } from "@/types/commonTypes";
+import { useNavigationContainerRef } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import { FlatList, RefreshControl, StyleSheet } from "react-native";
 
 export default function Home() {
+  const navigationRef = useNavigationContainerRef();
+  const screen = Routes[navigationRef.getCurrentRoute()?.name as RoutesKey];
   const {
     selectors: { user },
-    actions: { setIsLoading },
+    actions: { setIsLoading, setModalConfirmation },
   } = useGlobalState();
   const { showToast } = useToast();
   const [posts, setPostsState] = useState<Post[]>([]);
@@ -29,7 +32,9 @@ export default function Home() {
         post.desc = post.desc.slice(0, 150) + "...";
       });
       setAllPosts(posts);
-      showToast("All Posts fetched");
+      if (screen === "Home") {
+        showToast("Posts fetched");
+      }
     } catch (error) {
       console.log("Error fetching posts:", error);
       showToast("Something went wrong", "error");
@@ -54,7 +59,14 @@ export default function Home() {
       style={styles.container}
       data={posts}
       keyExtractor={(item, index) => index.toString()}
-      renderItem={({ item }) => <CardComponent postItem={item} />}
+      renderItem={({ item }) => (
+        <CardComponent
+          postItem={item}
+          onDelete={() => {
+            setModalConfirmation(true);
+          }}
+        />
+      )}
       contentContainerStyle={{ paddingBottom: 32 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

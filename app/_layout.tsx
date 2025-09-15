@@ -1,3 +1,4 @@
+import { ConfirmationModal } from "@/components/ConfirmationModal";
 import DrawerWithListener from "@/components/DrawerWithListener";
 import FirebaseGoogleAuthHandler from "@/components/FirebaseGoogleAuthHandler";
 import { LoaderOverlay } from "@/components/LoadingOverlay";
@@ -15,6 +16,7 @@ export default function Layout() {
   }, []);
   return (
     <GlobalStateProvider>
+      <ConfirmationModal />
       <FirebaseGoogleAuthHandler />
       <LoaderOverlay />
       <GestureHandlerRootView style={{ flex: 1 }}>
