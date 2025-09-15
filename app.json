@@ -24,6 +24,7 @@
       "predictiveBackGestureEnabled": false,
       "package": "com.sidr99.blognativeapp",
       "googleServicesFile": "./google-services.json"
+      // "googleServicesFile": "/Users/sidrachh/Documents/projects/blog-native-app/google-services.json" // absolute path is required while using eas local build
     },
     "web": {
       "output": "static",
