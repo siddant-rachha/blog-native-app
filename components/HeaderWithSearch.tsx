@@ -58,9 +58,7 @@ export default function HeaderWithSearch({
         <TouchableOpacity
           style={styles.touchableOpacityButton}
           onPress={async () => {
-            setIsLoading(true);
             await signInWithGoogle();
-            setIsLoading(false);
           }}
         >
           <Text style={{ color: "white" }}>Login</Text>

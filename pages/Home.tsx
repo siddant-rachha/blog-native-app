@@ -8,6 +8,7 @@ import { FlatList, RefreshControl, StyleSheet } from "react-native";
 
 export default function Home() {
   const {
+    selectors: { user },
     actions: { setIsLoading },
   } = useGlobalState();
   const { showToast } = useToast();
@@ -28,7 +29,7 @@ export default function Home() {
         post.desc = post.desc.slice(0, 150) + "...";
       });
       setAllPosts(posts);
-      showToast("Posts fetched");
+      showToast("All Posts fetched");
     } catch (error) {
       console.log("Error fetching posts:", error);
       showToast("Something went wrong", "error");
@@ -44,8 +45,9 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    console.log(user);
     getAllPosts();
-  }, []);
+  }, [user]);
 
   return (
     <FlatList
