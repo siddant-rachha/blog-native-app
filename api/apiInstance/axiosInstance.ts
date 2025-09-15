@@ -1,3 +1,4 @@
+import { secureTokenManager } from "@/utils/secure-token-manager/secureTokenManager";
 import axios from "axios";
 
 const axiosInstance = axios.create({
@@ -10,8 +11,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    // Example: attach token if available
-    const token = ""; // later get from secure storage/global state
+    const token = secureTokenManager.getTokenFromMemory();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

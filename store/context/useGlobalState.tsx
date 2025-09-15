@@ -14,6 +14,8 @@ export const useGlobalState = () => {
   // Selectors
   const searchInput = state.searchInput;
   const isLoading = state.isLoading;
+  const user = state.user;
+  const authToken = state.authToken;
 
   // Actions
   const setSearchInput = (value: string) => {
@@ -30,8 +32,22 @@ export const useGlobalState = () => {
     }));
   };
 
+  const setUser = (value: any) => {
+    setState((prev) => ({
+      ...prev,
+      user: value,
+    }));
+  };
+
+  const setAuthToken = (value: string | null) => {
+    setState((prev) => ({
+      ...prev,
+      authToken: value,
+    }));
+  };
+
   return {
-    selectors: { searchInput, isLoading },
-    actions: { setSearchInput, setIsLoading },
+    selectors: { searchInput, isLoading, user, authToken },
+    actions: { setSearchInput, setIsLoading, setUser, setAuthToken },
   };
 };

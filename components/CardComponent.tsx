@@ -1,4 +1,5 @@
 import { Post } from "@/types/commonTypes";
+import { convertSecondsToDate } from "@/utils/convertSecondsToDate";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -20,19 +21,30 @@ export default function CardComponent({ postItem }: { postItem: Post }) {
 
         {/* author name and date container*/}
         <View>
-          <Text style={styles.authorName}>Author Name</Text>
-          <Text style={styles.authorDate}>Author Date</Text>
+          <Text style={styles.authorName}>{postItem.author}</Text>
+          <Text style={styles.authorDate}>
+            {convertSecondsToDate(
+              postItem.createdAt._seconds,
+              postItem.createdAt._nanoseconds
+            ).toString()}
+          </Text>
         </View>
 
         {/* Edit and Delete button  */}
-        <View style={{ marginLeft: "auto", flexDirection: "row", gap: 10 }}>
-          <TouchableOpacity onPress={() => {}}>
-            <MaterialIcons name="edit" size={24} color={"#007BFF"} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => {}}>
-            <MaterialIcons name="delete-outline" size={24} color={"#FF3B30"} />
-          </TouchableOpacity>
-        </View>
+        {postItem.writePermission && (
+          <View style={{ marginLeft: "auto", flexDirection: "row", gap: 10 }}>
+            <TouchableOpacity onPress={() => {}}>
+              <MaterialIcons name="edit" size={24} color={"#007BFF"} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {}}>
+              <MaterialIcons
+                name="delete-outline"
+                size={24}
+                color={"#FF3B30"}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
 
       {/* description */}

@@ -28,7 +28,7 @@ export default function Home() {
         post.desc = post.desc.slice(0, 150) + "...";
       });
       setAllPosts(posts);
-      showToast("Posts fetched successfully");
+      showToast("Posts fetched");
     } catch (error) {
       console.log("Error fetching posts:", error);
       showToast("Something went wrong", "error");

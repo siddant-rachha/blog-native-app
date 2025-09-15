@@ -3,6 +3,8 @@ import React, { createContext, ReactNode, useState } from "react";
 type GlobalState = {
   searchInput: string;
   isLoading: boolean;
+  user: any;
+  authToken: string | null;
 };
 
 type GlobalStateContextType = {
@@ -18,6 +20,8 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<GlobalState>({
     searchInput: "",
     isLoading: true,
+    user: null,
+    authToken: null,
   });
 
   return (
