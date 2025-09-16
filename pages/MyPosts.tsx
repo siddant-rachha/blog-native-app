@@ -1,15 +1,14 @@
 import { postsApi } from "@/api/services/postsApi";
 import CardComponent from "@/components/CardComponent";
+import { useGetCurrentScreen } from "@/hooks/useGetCurrentScreen";
 import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
-import { Post, Routes, RoutesKey } from "@/types/commonTypes";
-import { useNavigationContainerRef } from "expo-router";
+import { Post } from "@/types/commonTypes";
 import { useCallback, useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, Text } from "react-native";
 
 export default function MyPosts() {
-  const navigationRef = useNavigationContainerRef();
-  const screen = Routes[navigationRef.getCurrentRoute()?.name as RoutesKey];
+  const { currentScreen } = useGetCurrentScreen();
 
   const {
     selectors: { user },
@@ -33,7 +32,7 @@ export default function MyPosts() {
         post.desc = post.desc.slice(0, 150) + "...";
       });
       setMyPosts(posts);
-      if (screen === "MyPosts") {
+      if (currentScreen === "MyPosts") {
         showToast("My Posts fetched");
       }
     } catch (error) {
@@ -68,8 +67,26 @@ export default function MyPosts() {
   };
 
   useEffect(() => {
-    getMyPosts();
-  }, [user]);
+    if (currentScreen === "MyPosts" && user) {
+      getMyPosts();
+    }
+  }, [user, currentScreen]);
+
+  if (!user) {
+    return (
+      <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
+        Login to see your created posts.
+      </Text>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
+        No posts created yet.
+      </Text>
+    );
+  }
 
   return (
     <FlatList

@@ -1,3 +1,4 @@
+import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigationContainerRef } from "expo-router";
@@ -13,9 +14,11 @@ export default function DrawerWithListener() {
   const {
     actions: { setSearchInput },
   } = useGlobalState();
+  const { clearToast } = useToast();
 
   useEffect(() => {
     const unsubscribe = navigationRef.addListener("state", () => {
+      clearToast();
       const currentRoute = navigationRef.getCurrentRoute();
 
       if (

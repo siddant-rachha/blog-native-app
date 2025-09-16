@@ -4,7 +4,11 @@ import React, { createContext, ReactNode, useState } from "react";
 type GlobalState = {
   searchInput: string;
   isLoading: boolean;
-  user: any;
+  user: {
+    email: string;
+    displayName: string;
+    photoURL: string;
+  } | null;
   currentScreen?: Screens;
   confirmationModal: {
     isOpen: boolean;

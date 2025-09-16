@@ -13,5 +13,9 @@ export function useToast() {
     });
   };
 
-  return { showToast };
+  const clearToast = () => {
+    Toast.hide();
+  };
+
+  return { showToast, clearToast };
 }

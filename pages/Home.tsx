@@ -1,15 +1,14 @@
 import { postsApi } from "@/api/services/postsApi";
 import CardComponent from "@/components/CardComponent";
+import { useGetCurrentScreen } from "@/hooks/useGetCurrentScreen";
 import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
-import { Post, Routes, RoutesKey } from "@/types/commonTypes";
-import { useNavigationContainerRef } from "expo-router";
+import { Post } from "@/types/commonTypes";
 import { useCallback, useEffect, useState } from "react";
 import { FlatList, RefreshControl, StyleSheet } from "react-native";
 
 export default function Home() {
-  const navigationRef = useNavigationContainerRef();
-  const screen = Routes[navigationRef.getCurrentRoute()?.name as RoutesKey];
+  const { currentScreen } = useGetCurrentScreen();
   const {
     selectors: { user },
     actions: { setIsLoading, setModalConfirmation },
@@ -32,7 +31,7 @@ export default function Home() {
         post.desc = post.desc.slice(0, 150) + "...";
       });
       setAllPosts(posts);
-      if (screen === "Home") {
+      if (currentScreen === "Home") {
         showToast("Posts fetched");
       }
     } catch (error) {
@@ -66,8 +65,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    getAllPosts();
-  }, [user]);
+    if (currentScreen === "Home") {
+      getAllPosts();
+    }
+  }, [user, currentScreen]);
 
   return (
     <FlatList

@@ -25,4 +25,16 @@ export const postsApi = {
     const res = await axiosInstance.post(`/deletepost/`, { postId });
     return res.data;
   },
+
+  createPost: async ({ title, desc }: { title: string; desc: string }) => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("desc", desc);
+    const res = await axiosInstance.post(`/createpost/`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return res.data;
+  },
 };

@@ -19,7 +19,11 @@ export default function FirebaseGoogleAuthHandler() {
   // Handle user state changes
   function handleAuthStateChanged(firebaseUser: FirebaseAuthTypes.User | null) {
     if (firebaseUser) {
-      setUser(firebaseUser);
+      setUser({
+        email: firebaseUser.email,
+        displayName: firebaseUser.displayName,
+        photoURL: firebaseUser.photoURL,
+      });
       firebaseUser.getIdToken().then((token) => {
         secureTokenManager.setToken(token);
       });
