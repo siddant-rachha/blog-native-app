@@ -45,7 +45,7 @@ export default function CreatePost() {
       }
     } else {
       alert(
-        `Please fill fields: ${title ? "" : "'Blog Title'"}, ${
+        `Please fill fields: ${title ? "" : "'Blog Title'"}  ${
           desc ? "" : "'Description'"
         }`
       );
@@ -65,6 +65,7 @@ export default function CreatePost() {
         placeholder="Blog Title"
         onChangeText={(text) => setTitle(text)}
         maxLength={50}
+        placeholderTextColor="#A9A9A9"
       />
       <Text style={styles.maxLengthCaption}>{title.length}/50</Text>
       <TextInput
@@ -74,6 +75,7 @@ export default function CreatePost() {
         multiline
         onChangeText={(text) => setDesc(text)}
         maxLength={5000}
+        placeholderTextColor="#A9A9A9"
       />
       <Text style={styles.maxLengthCaption}>{desc.length}/5000</Text>
 
@@ -94,7 +96,6 @@ export default function CreatePost() {
       <TouchableOpacity
         style={styles.submitButton}
         onPress={() => {
-          console.log("submit clicked");
           onSubmit();
         }}
       >
@@ -126,7 +127,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   nameInput: {
-    height: 40,
     borderWidth: 1,
     marginBottom: 12,
     padding: 8,
@@ -135,10 +135,8 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     paddingLeft: 8,
     backgroundColor: "#E6E6E6",
-    color: "gray",
   },
   blogTitleInput: {
-    height: 40,
     borderWidth: 1,
     padding: 8,
     borderRadius: 8,
