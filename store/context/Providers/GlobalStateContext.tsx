@@ -8,6 +8,7 @@ type GlobalState = {
   currentScreen?: Screens;
   confirmationModal: {
     isOpen: boolean;
+    callback: () => void;
     message: string;
   };
 };
@@ -28,6 +29,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     user: null,
     confirmationModal: {
       isOpen: false,
+      callback: () => {},
       message: "Do you want to delete?",
     },
   });

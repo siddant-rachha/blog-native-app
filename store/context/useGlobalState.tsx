@@ -39,12 +39,17 @@ export const useGlobalState = () => {
     }));
   };
 
-  const setModalConfirmation = (isOpen: boolean, message?: string) => {
+  const setModalConfirmation = (
+    isOpen: boolean,
+    callback: () => void,
+    message?: string
+  ) => {
     setState((prev) => ({
       ...prev,
       confirmationModal: {
         ...prev.confirmationModal,
         isOpen,
+        callback,
         ...(message ? { message } : {}),
       },
     }));

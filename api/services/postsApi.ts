@@ -20,4 +20,9 @@ export const postsApi = {
     );
     return res.data;
   },
+
+  deletePost: async (postId: string) => {
+    const res = await axiosInstance.post(`/deletepost/`, { postId });
+    return res.data;
+  },
 };

@@ -50,8 +50,24 @@ export default function MyPosts() {
     setRefreshing(false);
   }, []);
 
+  const deletePost = async (postId: string) => {
+    try {
+      setIsLoading(true);
+      await postsApi.deletePost(postId);
+      showToast("Post deleted");
+
+      // remove postId from state
+      const updatedPosts = posts.filter((post) => post.id !== postId);
+      setMyPosts(updatedPosts);
+    } catch (error) {
+      console.log("Error deleting post:", error);
+      showToast("Something went wrong", "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    console.log(user);
     getMyPosts();
   }, [user]);
 
@@ -62,9 +78,10 @@ export default function MyPosts() {
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
         <CardComponent
+          key={item.id}
           postItem={item}
           onDelete={() => {
-            setModalConfirmation(true);
+            setModalConfirmation(true, () => deletePost(item.id));
           }}
         />
       )}

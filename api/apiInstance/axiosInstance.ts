@@ -15,13 +15,15 @@ axiosInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    console.log(
-      "➡️ Request:",
-      config.method,
-      config.url,
-      config.data,
-      config.headers.Authorization ? "✅" : "❌"
-    );
+    if (process.env.EXPO_PUBLIC_ENABLE_AXIOS_LOGS === "true") {
+      console.log(
+        "➡️ Request:",
+        config.method,
+        config.url,
+        config.data,
+        config.headers.Authorization ? "✅" : "❌"
+      );
+    }
     return config;
   },
   (error) => Promise.reject(error)
@@ -29,12 +31,14 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log(
-      "⬅️ Response:",
-      response.status,
-      response.config.url,
-      response.data
-    );
+    if (process.env.EXPO_PUBLIC_ENABLE_AXIOS_LOGS === "true") {
+      console.log(
+        "⬅️ Response:",
+        response.status,
+        response.config.url,
+        response.data
+      );
+    }
     return response;
   },
   (error) => {

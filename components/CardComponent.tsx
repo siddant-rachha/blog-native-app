@@ -16,12 +16,12 @@ export default function CardComponent({
       <Text style={styles.title}>{postItem.title}</Text>
 
       {/* image */}
-      <Image source={{ uri: postItem.imageUrl }} style={styles.image} />
+      <Image source={{ uri: postItem.imageUrl || "#" }} style={styles.image} />
 
       <View style={styles.authorContainer}>
         {/* author round icon */}
         <Image
-          source={{ uri: postItem.authorPic }}
+          source={{ uri: postItem.authorPic || "#" }}
           style={styles.authorImage}
         />
 

@@ -74,7 +74,7 @@ export default function HeaderWithSearch({
           }}
         >
           <Image
-            source={{ uri: user.photoURL }}
+            source={{ uri: user.photoURL || "#" }}
             style={{ width: 36, height: 36, borderRadius: 18 }}
             alt="User Avatar"
           />

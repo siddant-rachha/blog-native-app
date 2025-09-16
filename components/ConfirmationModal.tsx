@@ -19,17 +19,23 @@ export const ConfirmationModal = () => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        onPress={() => setModalConfirmation(false)}
+        onPress={() => setModalConfirmation(false, () => {})}
         style={styles.modalOverlay}
       />
       <View style={styles.modalContainer}>
-        <Text style={styles.modalTitle}>Are you sure?</Text>
-        <View style={{ flexDirection: "row", gap: 10 }}>
-          <TouchableOpacity onPress={() => {}} style={styles.modalYesButton}>
+        <Text style={styles.modalTitle}>{modalConfirmation.message}</Text>
+        <View style={{ flexDirection: "row", gap: 16 }}>
+          <TouchableOpacity
+            onPress={() => {
+              modalConfirmation.callback();
+              setModalConfirmation(false, () => {});
+            }}
+            style={styles.modalYesButton}
+          >
             <Text>Yes</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => setModalConfirmation(false)}
+            onPress={() => setModalConfirmation(false, () => {})}
             style={styles.modalNoButton}
           >
             <Text>No</Text>
