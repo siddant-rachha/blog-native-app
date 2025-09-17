@@ -38,7 +38,7 @@ export default function DrawerWithListener() {
   }, [navigationRef]);
 
   return (
-    <Drawer screenOptions={{ drawerStyle: { width: screenWidth * 0.5 } }}>
+    <Drawer screenOptions={{ drawerStyle: { width: screenWidth * 0.6 } }}>
       {[
         { name: "index", label: "Home", materialIcon: "home" as const },
         {

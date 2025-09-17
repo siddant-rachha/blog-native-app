@@ -2,10 +2,10 @@ import { useGlobalState } from "@/store/context/useGlobalState";
 import { signInWithGoogle } from "@/utils/google-auth/signInWithGoogle";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getAuth, signOut } from "@react-native-firebase/auth";
+import { Image } from "expo-image";
 import { ComponentProps, useState } from "react";
 import {
   Dimensions,
-  Image,
   StyleSheet,
   Text,
   TextInput,

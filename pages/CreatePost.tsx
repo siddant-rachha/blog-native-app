@@ -1,8 +1,8 @@
 import useCreatePostHook from "@/hooks/CreatePostHook/useCreatePostHook";
 import { MaterialIcons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import {
   Dimensions,
-  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -73,8 +73,11 @@ export default function CreatePost() {
           <View style={{ position: "relative" }}>
             <Image
               source={{ uri: imageString }}
-              style={{ height: screenHeight * 0.1, aspectRatio: 9 / 6 }}
-              borderRadius={8}
+              style={{
+                height: screenHeight * 0.1,
+                aspectRatio: 9 / 6,
+                borderRadius: 8,
+              }}
             />
             <MaterialIcons
               name="cancel"

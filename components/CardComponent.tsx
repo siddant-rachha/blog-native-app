@@ -1,7 +1,8 @@
 import { Post } from "@/types/commonTypes";
 import { convertSecondsToDate } from "@/utils/convertSecondsToDate";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image } from "expo-image";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function CardComponent({
   postItem,
@@ -16,12 +17,23 @@ export default function CardComponent({
       <Text style={styles.title}>{postItem.title}</Text>
 
       {/* image */}
-      <Image source={{ uri: postItem.imageUrl || "#" }} style={styles.image} />
+      <Image
+        source={
+          postItem.imageUrl
+            ? { uri: postItem.imageUrl }
+            : require("../assets/images/no-img.png")
+        }
+        style={styles.image}
+      />
 
       <View style={styles.authorContainer}>
         {/* author round icon */}
         <Image
-          source={{ uri: postItem.authorPic || "#" }}
+          source={
+            postItem.authorPic
+              ? { uri: postItem.authorPic }
+              : require("../assets/images/no-img.png")
+          }
           style={styles.authorImage}
         />
 
