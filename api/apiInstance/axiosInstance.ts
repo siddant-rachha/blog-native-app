@@ -2,7 +2,7 @@ import { secureTokenManager } from "@/utils/secure-token-manager/secureTokenMana
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://blog-web-app1.vercel.app/api", // keep in .env ideally
+  baseURL: process.env.EXPO_PUBLIC_API_BASE_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",

@@ -1,56 +1,23 @@
-import { postsApi } from "@/api/services/postsApi";
-import { useToast } from "@/hooks/useToast";
-import { useGlobalState } from "@/store/context/useGlobalState";
+import useCreatePostHook from "@/hooks/CreatePostHook/useCreatePostHook";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useState } from "react";
 import {
   Dimensions,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 const screenHeight = Dimensions.get("window").height;
 
 export default function CreatePost() {
   const {
-    selectors: { user },
-    actions: { setIsLoading },
-  } = useGlobalState();
-  const { showToast } = useToast();
-
-  const [title, setTitle] = useState("");
-  const [desc, setDesc] = useState("");
-
-  const onUploadImage = () => {};
-
-  const onSubmit = async () => {
-    if (title && desc) {
-      try {
-        setIsLoading(true);
-        await postsApi.createPost({
-          title,
-          desc,
-        });
-        showToast("Post created");
-        setTitle("");
-        setDesc("");
-      } catch (error) {
-        console.log("Error creating post:", error);
-        showToast("Something went wrong", "error");
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      alert(
-        `Please fill fields: ${title ? "" : "'Blog Title'"}  ${
-          desc ? "" : "'Description'"
-        }`
-      );
-    }
-  };
+    selectors: { desc, imageString, title, user },
+    actions: { onSubmit, onUploadImage, setDesc, setImageString, setTitle },
+  } = useCreatePostHook();
   return (
     <ScrollView style={styles.createPostContainer}>
       <Text style={styles.title}>Create Blog Post</Text>
@@ -80,18 +47,53 @@ export default function CreatePost() {
       <Text style={styles.maxLengthCaption}>{desc.length}/5000</Text>
 
       {/* upload image feature */}
-      <TouchableOpacity
-        style={styles.uploadImageButton}
-        onPress={() => onUploadImage()}
-      >
-        <MaterialIcons
-          name="cloud-upload"
-          size={18}
-          color="#007BFF"
-          style={{ marginRight: 8 }}
-        />
-        <Text style={{ color: "#007BFF", fontSize: 12 }}>Upload Image</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row", gap: 16, alignItems: "flex-start" }}>
+        <TouchableOpacity
+          style={styles.uploadImageButton}
+          onPress={() => onUploadImage()}
+          disabled={!!imageString}
+        >
+          <MaterialIcons
+            name="cloud-upload"
+            size={18}
+            color={!imageString ? "#007BFF" : "#A9A9A9"}
+            style={{ marginRight: 8 }}
+          />
+          <Text
+            style={{
+              fontSize: 12,
+              color: !imageString ? "#007BFF" : "#A9A9A9",
+            }}
+          >
+            Upload Image
+          </Text>
+        </TouchableOpacity>
+
+        {imageString ? (
+          <View style={{ position: "relative" }}>
+            <Image
+              source={{ uri: imageString }}
+              style={{ height: screenHeight * 0.1, aspectRatio: 9 / 6 }}
+              borderRadius={8}
+            />
+            <MaterialIcons
+              name="cancel"
+              size={22}
+              style={{
+                position: "absolute",
+                right: -8,
+                top: -8,
+              }}
+              color={"gray"}
+              onPress={() => setImageString(null)}
+            />
+          </View>
+        ) : (
+          <Text style={{ fontSize: 12, color: "#A9A9A9" }}>
+            No image selected / (optional)
+          </Text>
+        )}
+      </View>
 
       <TouchableOpacity
         style={styles.submitButton}
@@ -144,7 +146,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
   },
   descriptionInput: {
-    height: screenHeight * 0.4,
+    height: screenHeight * 0.3,
     borderWidth: 1,
     padding: 8,
     borderRadius: 8,
@@ -153,13 +155,14 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   uploadImageButton: {
-    backgroundColor: "#E6E6E6", // shade of grey
+    backgroundColor: "#E6E6E6",
     padding: 10,
     borderRadius: 4,
     alignItems: "center",
     justifyContent: "center",
-    width: "50%",
+    width: "40%",
     flexDirection: "row",
+    marginBottom: 8,
   },
   submitButton: {
     backgroundColor: "#007BFF",

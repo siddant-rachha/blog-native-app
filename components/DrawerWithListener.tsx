@@ -4,8 +4,10 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigationContainerRef } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useEffect, useRef } from "react";
-import { View } from "react-native";
+import { Dimensions, View } from "react-native";
 import HeaderWithSearch from "./HeaderWithSearch";
+
+const screenWidth = Dimensions.get("window").width;
 
 export default function DrawerWithListener() {
   const navigationRef = useNavigationContainerRef();
@@ -36,7 +38,7 @@ export default function DrawerWithListener() {
   }, [navigationRef]);
 
   return (
-    <Drawer>
+    <Drawer screenOptions={{ drawerStyle: { width: screenWidth * 0.5 } }}>
       {[
         { name: "index", label: "Home", materialIcon: "home" as const },
         {
