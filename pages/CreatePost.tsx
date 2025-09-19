@@ -13,14 +13,17 @@ import {
 
 const screenHeight = Dimensions.get("window").height;
 
-export default function CreatePost() {
+export default function CreatePost({ type }: { type?: "edit" }) {
   const {
     selectors: { desc, imageString, title, user },
     actions: { onSubmit, onUploadImage, setDesc, setImageString, setTitle },
   } = useCreatePostHook();
+
   return (
     <ScrollView style={styles.createPostContainer}>
-      <Text style={styles.title}>Create Blog Post</Text>
+      <Text style={styles.title}>
+        {type === "edit" ? "Edit Blog Post" : "Create Blog Post"}
+      </Text>
       <TextInput
         style={styles.nameInput}
         defaultValue={user?.displayName || "Author: Anonymous"}

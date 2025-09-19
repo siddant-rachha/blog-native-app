@@ -14,6 +14,7 @@ export const Routes = {
   "create-post": "CreatePost" as const,
   "my-posts": "MyPosts" as const,
   "post/[id]": "Post" as const,
+  "edit-post": "EditPost" as const,
 };
 
 export type RoutesKey = keyof typeof Routes;

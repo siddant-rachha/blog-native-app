@@ -4,6 +4,7 @@ import React, { createContext, ReactNode, useState } from "react";
 type GlobalState = {
   allPosts: Post[];
   myPosts: Post[];
+  post: Post | null;
   searchInput: string;
   isLoading: boolean;
   user: {
@@ -43,6 +44,7 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     postComingFrom: null,
     allPosts: [],
     myPosts: [],
+    post: null,
   });
 
   return (

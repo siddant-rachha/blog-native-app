@@ -6,7 +6,13 @@ import { useGlobalState } from "@/store/context/useGlobalState";
 import { RoutesKey } from "@/types/commonTypes";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, Text } from "react-native";
+import {
+  FlatList,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+} from "react-native";
 
 export default function MyPosts() {
   const { currentScreen } = useGetScreen();
@@ -79,9 +85,18 @@ export default function MyPosts() {
 
   if (myPosts.length === 0) {
     return (
-      <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
-        No posts created yet.
-      </Text>
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
+          No posts created yet.
+        </Text>
+      </ScrollView>
     );
   }
 
@@ -98,7 +113,19 @@ export default function MyPosts() {
             setModalConfirmation(true, () => deletePost(item.id));
           }}
           onEdit={() => {
-            setModalConfirmation(true, () => {}, "edit");
+            setModalConfirmation(
+              true,
+              () => {
+                router.push({
+                  pathname: "/edit-post",
+                  params: {
+                    id: item.id,
+                    postComingFromParam: "my-posts" as RoutesKey,
+                  },
+                });
+              },
+              "edit"
+            );
           }}
           onReadClick={() => {
             router.push({

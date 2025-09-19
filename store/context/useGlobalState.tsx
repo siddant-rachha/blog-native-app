@@ -20,6 +20,7 @@ export const useGlobalState = () => {
   const postComingFrom = state.postComingFrom;
   const allPosts = state.allPosts;
   const myPosts = state.myPosts;
+  const post = state.post;
 
   // Actions
   const setSearchInput = (value: string) => {
@@ -83,6 +84,13 @@ export const useGlobalState = () => {
     }));
   };
 
+  const setPost = (postData: Post | null) => {
+    setState((prev) => ({
+      ...prev,
+      post: postData,
+    }));
+  };
+
   return {
     selectors: {
       searchInput,
@@ -92,6 +100,7 @@ export const useGlobalState = () => {
       postComingFrom,
       allPosts,
       myPosts,
+      post,
     },
     actions: {
       setSearchInput,
@@ -101,6 +110,7 @@ export const useGlobalState = () => {
       setPostComingFrom,
       setAllPosts,
       setMyPosts,
+      setPost,
     },
   };
 };

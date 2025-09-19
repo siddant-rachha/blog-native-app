@@ -81,7 +81,19 @@ export default function Home() {
             setModalConfirmation(true, () => deletePost(item.id));
           }}
           onEdit={() => {
-            setModalConfirmation(true, () => {}, "edit");
+            setModalConfirmation(
+              true,
+              () => {
+                router.push({
+                  pathname: "/edit-post",
+                  params: {
+                    id: item.id,
+                    postComingFromParam: "index" as RoutesKey,
+                  },
+                });
+              },
+              "edit"
+            );
           }}
           onReadClick={() => {
             router.push({

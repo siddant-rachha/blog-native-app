@@ -49,11 +49,20 @@ export default function DrawerWithListener() {
           materialIcon: "post-add" as const,
         },
         { name: "my-posts", label: "My Posts", materialIcon: "book" as const },
+        {
+          name: "edit-post",
+          label: "Edit Post",
+          materialIcon: "edit" as const,
+          display: false,
+        },
       ].map((screen) => (
         <Drawer.Screen
           key={screen.name}
           name={screen.name}
           options={({ navigation }) => ({
+            ...(screen.display === false && {
+              drawerItemStyle: { display: "none" },
+            }),
             drawerIcon: ({ color, size }) => (
               <MaterialIcons
                 name={screen.materialIcon}
@@ -86,7 +95,7 @@ export default function DrawerWithListener() {
       <Drawer.Screen
         name="post/[id]"
         options={{
-          drawerItemStyle: { height: 0 },
+          drawerItemStyle: { display: "none" },
           headerTitle: "Post Details",
           headerLeft: () => (
             <MaterialIcons

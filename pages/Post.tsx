@@ -1,11 +1,12 @@
 import { postsApi } from "@/api/services/postsApi";
 import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
-import { Post, RoutesKey } from "@/types/commonTypes";
+import { RoutesKey } from "@/types/commonTypes";
+import { convertSecondsToDate } from "@/utils/convertSecondsToDate";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   BackHandler,
   StyleSheet,
@@ -27,15 +28,11 @@ export default function PostComponent() {
       setModalConfirmation,
       setAllPosts,
       setMyPosts,
+      setPost,
     },
-    selectors: { allPosts, myPosts },
+    selectors: { allPosts, myPosts, post, user },
   } = useGlobalState();
   const toast = useToast();
-  const [post, setPostState] = useState<Post | null>(null);
-
-  const setPost = (postData: Post | null) => {
-    setPostState(postData);
-  };
 
   useEffect(() => {
     setPostComingFrom(postComingFromParamTyped);
@@ -99,8 +96,8 @@ export default function PostComponent() {
   };
 
   useEffect(() => {
-    getPostById(id as string);
-  }, [id]);
+    if (id) getPostById(id as string);
+  }, [id, user]);
 
   if (!post) return null;
 
@@ -135,7 +132,10 @@ export default function PostComponent() {
               <View>
                 <Text style={styles.authorName}>{post?.author}</Text>
                 <Text style={styles.authorDate}>
-                  {post?.createdAt._seconds}
+                  {convertSecondsToDate(
+                    post?.createdAt._seconds,
+                    post?.createdAt._nanoseconds
+                  )}
                 </Text>
               </View>
             </View>
@@ -165,7 +165,7 @@ export default function PostComponent() {
             )}
           </View>
           {/* description */}
-          <Text style={{ textAlign: "justify" }}>
+          <Text style={{ textAlign: "justify", lineHeight: 20, fontSize: 16 }}>
             {post?.desc.replace(/\\r\\n|\\n|\\r/g, "\n")}
           </Text>
         </View>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
     marginVertical: 24,
-    paddingBottom: 24,
+    paddingBottom: 48,
   },
   image: {
     width: "100%",
