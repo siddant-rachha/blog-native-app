@@ -1,6 +1,9 @@
 import useCreatePostHook from "@/hooks/CreatePostHook/useCreatePostHook";
+import { RoutesKey } from "@/types/commonTypes";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { useLocalSearchParams, usePathname } from "expo-router";
+import { useEffect } from "react";
 import {
   Dimensions,
   ScrollView,
@@ -16,8 +19,32 @@ const screenHeight = Dimensions.get("window").height;
 export default function CreatePost({ type }: { type?: "edit" }) {
   const {
     selectors: { desc, imageString, title, user },
-    actions: { onSubmit, onUploadImage, setDesc, setImageString, setTitle },
+    actions: {
+      onSubmit,
+      onUploadImage,
+      setDesc,
+      setImageString,
+      setTitle,
+      fetchPostDataForEdit,
+    },
   } = useCreatePostHook();
+  const pathname = usePathname();
+
+  // need to get id from params to fetch post data for editing
+  const { id } = useLocalSearchParams();
+
+  useEffect(() => {
+    if (type === "edit" && pathname.includes("edit-post" as RoutesKey)) {
+      if (id) {
+        fetchPostDataForEdit(id as string);
+      }
+      return () => {
+        setDesc("");
+        setImageString(null);
+        setTitle("");
+      };
+    }
+  }, [id, type, pathname]);
 
   return (
     <ScrollView style={styles.createPostContainer}>
@@ -104,10 +131,12 @@ export default function CreatePost({ type }: { type?: "edit" }) {
       <TouchableOpacity
         style={styles.submitButton}
         onPress={() => {
-          onSubmit();
+          onSubmit(type === "edit" ? "edit" : "create", id as string);
         }}
       >
-        <Text style={{ color: "white", fontSize: 16 }}>Submit</Text>
+        <Text style={{ color: "white", fontSize: 16 }}>
+          {type === "edit" ? "Update" : "Submit"}
+        </Text>
       </TouchableOpacity>
     </ScrollView>
   );

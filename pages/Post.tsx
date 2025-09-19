@@ -145,7 +145,22 @@ export default function PostComponent() {
               <View style={styles.editDeleteContainer}>
                 <TouchableOpacity
                   onPress={() => {
-                    setModalConfirmation(true, () => {}, "edit");
+                    setModalConfirmation(
+                      true,
+                      () => {
+                        router.push({
+                          pathname: "/edit-post",
+
+                          params: {
+                            id: post.id,
+                            // postComingFromParam is not handled in edit-post screen
+                            // as it is already handled in this screen above
+                            postComingFromParam: "my-posts" as RoutesKey,
+                          },
+                        });
+                      },
+                      "edit"
+                    );
                   }}
                 >
                   <MaterialIcons name="edit" size={24} color={"#007BFF"} />

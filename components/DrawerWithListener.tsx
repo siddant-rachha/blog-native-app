@@ -49,20 +49,11 @@ export default function DrawerWithListener() {
           materialIcon: "post-add" as const,
         },
         { name: "my-posts", label: "My Posts", materialIcon: "book" as const },
-        {
-          name: "edit-post",
-          label: "Edit Post",
-          materialIcon: "edit" as const,
-          display: false,
-        },
       ].map((screen) => (
         <Drawer.Screen
           key={screen.name}
           name={screen.name}
           options={({ navigation }) => ({
-            ...(screen.display === false && {
-              drawerItemStyle: { display: "none" },
-            }),
             drawerIcon: ({ color, size }) => (
               <MaterialIcons
                 name={screen.materialIcon}
@@ -92,11 +83,38 @@ export default function DrawerWithListener() {
         />
       ))}
 
+      {/* hidden post details */}
       <Drawer.Screen
         name="post/[id]"
         options={{
           drawerItemStyle: { display: "none" },
           headerTitle: "Post Details",
+          headerLeft: () => (
+            <MaterialIcons
+              name="arrow-back"
+              size={32}
+              color="black"
+              style={{ marginLeft: 12, marginRight: 6 }}
+              onPress={() => {
+                if (postComingFrom === "my-posts") {
+                  router.push("/my-posts");
+                } else if (postComingFrom === "index") {
+                  router.push("/");
+                } else {
+                  router.push("/");
+                }
+              }}
+            />
+          ),
+        }}
+      />
+
+      {/* hidden edit post */}
+      <Drawer.Screen
+        name="edit-post"
+        options={{
+          drawerItemStyle: { display: "none" },
+          headerTitle: "Edit Post",
           headerLeft: () => (
             <MaterialIcons
               name="arrow-back"

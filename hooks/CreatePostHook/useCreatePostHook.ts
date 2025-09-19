@@ -85,19 +85,40 @@ export default function useCreatePostHook() {
     ]);
   };
 
-  const onSubmit = async () => {
+  const onSubmit = async (type: "edit" | "create", id: string | undefined) => {
     if (title && desc) {
       try {
         setIsLoading(true);
-        await postsApi.createPost({
-          title,
-          desc,
-          imageString,
-        });
-        showToast("Post created, fetching posts...");
-        setTitle("");
-        setDesc("");
-        setImageString(null);
+        // check if imageString is a base64 string or a url
+        const isBase64 = (str: string) => {
+          return /^data:image\/[a-zA-Z]+;base64,/.test(str);
+        };
+
+        if (type === "edit") {
+          await postsApi.updatePost({
+            title,
+            desc,
+            postId: id as string,
+            imageString:
+              imageString && isBase64(imageString) ? imageString : "",
+            imageUrl: imageString && !isBase64(imageString) ? imageString : "",
+          });
+          showToast("Post updated, fetching posts...");
+          setTitle("");
+          setDesc("");
+          setImageString(null);
+        } else {
+          // type === 'create'
+          await postsApi.createPost({
+            title,
+            desc,
+            imageString,
+          });
+          showToast("Post created, fetching posts...");
+          setTitle("");
+          setDesc("");
+          setImageString(null);
+        }
 
         // fetch all posts and my posts in parallel
         const [allPosts, myPosts] = await Promise.all([
@@ -141,8 +162,30 @@ export default function useCreatePostHook() {
     }
   };
 
+  const fetchPostDataForEdit = async (id: string) => {
+    try {
+      setIsLoading(true);
+      const postData = await postsApi.getPostById(id);
+      setTitle(postData.post.title);
+      setDesc(postData.post.desc);
+      setImageString(postData.post.imageUrl || null);
+    } catch (error) {
+      console.log("Error fetching post data:", error);
+      showToast("Something went wrong", "error");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return {
-    actions: { onUploadImage, onSubmit, setDesc, setImageString, setTitle },
+    actions: {
+      onUploadImage,
+      onSubmit,
+      setDesc,
+      setImageString,
+      setTitle,
+      fetchPostDataForEdit,
+    },
     selectors: { title, desc, imageString, user },
   };
 }

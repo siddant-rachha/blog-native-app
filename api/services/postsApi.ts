@@ -51,4 +51,30 @@ export const postsApi = {
     const res = await axiosInstance.post(`/createpost/`, { ...data });
     return res.data;
   },
+
+  updatePost: async ({
+    title,
+    desc,
+    imageString = "",
+    imageUrl = "",
+    postId,
+  }: {
+    title: string;
+    desc: string;
+    imageString: string;
+    imageUrl: string;
+    postId: string;
+  }) => {
+    const data = {
+      title,
+      desc,
+      ...(imageString ? { imageString } : {}),
+      ...(imageUrl ? { imageUrl } : {}),
+    };
+
+    const res = await axiosInstance.post(`/editpost?id=${postId}`, {
+      ...data,
+    });
+    return res.data;
+  },
 };
