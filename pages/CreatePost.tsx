@@ -84,8 +84,8 @@ export default function CreatePost() {
               size={22}
               style={{
                 position: "absolute",
-                right: -8,
-                top: -8,
+                right: -12,
+                top: -12,
               }}
               color={"gray"}
               onPress={() => setImageString(null)}

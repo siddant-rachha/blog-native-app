@@ -66,7 +66,7 @@ export default function MyPosts() {
   };
 
   useEffect(() => {
-    getMyPosts();
+    if (user) getMyPosts();
   }, [user]);
 
   if (!user) {

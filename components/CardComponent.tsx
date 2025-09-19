@@ -52,7 +52,7 @@ export default function CardComponent({
 
         {/* Edit and Delete button  */}
         {postItem.writePermission && (
-          <View style={{ marginLeft: "auto", flexDirection: "row", gap: 10 }}>
+          <View style={{ marginLeft: "auto", flexDirection: "row", gap: 16 }}>
             <TouchableOpacity onPress={() => {}}>
               <MaterialIcons name="edit" size={24} color={"#007BFF"} />
             </TouchableOpacity>

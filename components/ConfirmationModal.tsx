@@ -24,7 +24,7 @@ export const ConfirmationModal = () => {
       />
       <View style={styles.modalContainer}>
         <Text style={styles.modalTitle}>{modalConfirmation.message}</Text>
-        <View style={{ flexDirection: "row", gap: 16 }}>
+        <View style={{ flexDirection: "row", gap: 24 }}>
           <TouchableOpacity
             onPress={() => {
               modalConfirmation.callback();

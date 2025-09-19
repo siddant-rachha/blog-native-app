@@ -99,14 +99,29 @@ export default function useCreatePostHook() {
         setDesc("");
         setImageString(null);
 
+        // fetch all posts and my posts in parallel
         const [allPosts, myPosts] = await Promise.all([
           postsApi.getAll(),
-          postsApi.getMyPosts(),
+          user ? postsApi.getMyPosts() : Promise.resolve({ posts: [] }),
         ]);
-        setAllPosts(allPosts.posts);
-        setMyPosts(myPosts.posts);
+        const updatedAllPosts = allPosts.posts.map((post) => {
+          if (post.desc.length > 150) {
+            return { ...post, desc: post.desc.slice(0, 150) + "..." };
+          }
+          return post;
+        });
+        const updatedMyPosts = myPosts.posts.map((post) => {
+          if (post.desc.length > 150) {
+            return { ...post, desc: post.desc.slice(0, 150) + "..." };
+          }
+          return post;
+        });
+        setAllPosts(updatedAllPosts);
+        setMyPosts(updatedMyPosts);
+        //
+
         // navigate to home after promises are resolved
-        router.push("/");
+        router.push("/my-posts");
       } catch (error) {
         console.log("Error creating post:", error);
         showToast("Something went wrong", "error");

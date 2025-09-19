@@ -14,6 +14,13 @@ export const postsApi = {
     return res.data;
   },
 
+  getPostById: async (postId: string) => {
+    const res = await axiosInstance.get<{ post: Post }>(
+      `/getposts?id=${postId}`
+    );
+    return res.data;
+  },
+
   getMyPosts: async (latest: boolean = true) => {
     const res = await axiosInstance.get<GetAllPostsResponse>(
       `/getposts?latest=${latest}&myposts=true`
