@@ -6,6 +6,7 @@ import {
   requestGalleryPermission,
 } from "@/utils/permission-helpers/requestPermission";
 import * as ImagePicker from "expo-image-picker";
+import { useRouter } from "expo-router";
 import { useState } from "react";
 import { Alert } from "react-native";
 import { useToast } from "../useToast";
@@ -13,9 +14,10 @@ import { useToast } from "../useToast";
 export default function useCreatePostHook() {
   const {
     selectors: { user },
-    actions: { setIsLoading },
+    actions: { setIsLoading, setAllPosts, setMyPosts },
   } = useGlobalState();
   const { showToast } = useToast();
+  const router = useRouter();
 
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
@@ -92,10 +94,19 @@ export default function useCreatePostHook() {
           desc,
           imageString,
         });
-        showToast("Post created");
+        showToast("Post created, fetching posts...");
         setTitle("");
         setDesc("");
         setImageString(null);
+
+        const [allPosts, myPosts] = await Promise.all([
+          postsApi.getAll(),
+          postsApi.getMyPosts(),
+        ]);
+        setAllPosts(allPosts.posts);
+        setMyPosts(myPosts.posts);
+        // navigate to home after promises are resolved
+        router.push("/");
       } catch (error) {
         console.log("Error creating post:", error);
         showToast("Something went wrong", "error");

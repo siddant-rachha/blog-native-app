@@ -1,27 +1,22 @@
 import { postsApi } from "@/api/services/postsApi";
 import CardComponent from "@/components/CardComponent";
-import { useGetCurrentScreen } from "@/hooks/useGetCurrentScreen";
+import { useGetScreen } from "@/hooks/useGetScreen";
 import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
-import { Post } from "@/types/commonTypes";
-import { useCallback, useEffect, useState } from "react";
+import { RoutesKey } from "@/types/commonTypes";
+import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
 import { FlatList, RefreshControl, StyleSheet, Text } from "react-native";
 
 export default function MyPosts() {
-  const { currentScreen } = useGetCurrentScreen();
-
+  const { currentScreen } = useGetScreen();
+  const router = useRouter();
   const {
-    selectors: { user },
-    actions: { setIsLoading, setModalConfirmation },
+    selectors: { user, myPosts, allPosts },
+    actions: { setIsLoading, setModalConfirmation, setMyPosts, setAllPosts },
   } = useGlobalState();
   const { showToast } = useToast();
-  const [posts, setPostsState] = useState<Post[]>([]);
   const [refreshing, setRefreshing] = useState(false);
-  const setMyPosts = (myPosts: Post[] | undefined) => {
-    if (myPosts) {
-      setPostsState(myPosts);
-    }
-  };
 
   const getMyPosts = async () => {
     try {
@@ -37,17 +32,19 @@ export default function MyPosts() {
       }
     } catch (error) {
       console.log("Error fetching posts:", error);
-      showToast("Something went wrong", "error");
+      if (currentScreen === "MyPosts") {
+        showToast("Something went wrong", "error");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const onRefresh = useCallback(async () => {
+  const onRefresh = async () => {
     setRefreshing(true);
     await getMyPosts();
     setRefreshing(false);
-  }, []);
+  };
 
   const deletePost = async (postId: string) => {
     try {
@@ -56,8 +53,10 @@ export default function MyPosts() {
       showToast("Post deleted");
 
       // remove postId from state
-      const updatedPosts = posts.filter((post) => post.id !== postId);
-      setMyPosts(updatedPosts);
+      const updatedAllPosts = allPosts.filter((post) => post.id !== postId);
+      const updatedMyPosts = myPosts.filter((post) => post.id !== postId);
+      setAllPosts(updatedAllPosts);
+      setMyPosts(updatedMyPosts);
     } catch (error) {
       console.log("Error deleting post:", error);
       showToast("Something went wrong", "error");
@@ -67,10 +66,8 @@ export default function MyPosts() {
   };
 
   useEffect(() => {
-    if (currentScreen === "MyPosts" && user) {
-      getMyPosts();
-    }
-  }, [user, currentScreen]);
+    getMyPosts();
+  }, [user]);
 
   if (!user) {
     return (
@@ -80,7 +77,7 @@ export default function MyPosts() {
     );
   }
 
-  if (posts.length === 0) {
+  if (myPosts.length === 0) {
     return (
       <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
         No posts created yet.
@@ -91,7 +88,7 @@ export default function MyPosts() {
   return (
     <FlatList
       style={styles.container}
-      data={posts}
+      data={myPosts}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({ item }) => (
         <CardComponent
@@ -99,6 +96,15 @@ export default function MyPosts() {
           postItem={item}
           onDelete={() => {
             setModalConfirmation(true, () => deletePost(item.id));
+          }}
+          onReadClick={() => {
+            router.push({
+              pathname: "/post/[id]",
+              params: {
+                id: item.id,
+                postComingFromParam: "my-posts" as RoutesKey,
+              },
+            });
           }}
         />
       )}

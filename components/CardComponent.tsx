@@ -7,9 +7,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 export default function CardComponent({
   postItem,
   onDelete,
+  onReadClick,
 }: {
   postItem: Post;
   onDelete: () => void;
+  onReadClick: () => void;
 }) {
   return (
     <View style={styles.card}>
@@ -69,7 +71,10 @@ export default function CardComponent({
       <Text>{postItem.desc}</Text>
 
       {/* button */}
-      <TouchableOpacity onPress={() => {}} style={styles.touchableButton}>
+      <TouchableOpacity
+        onPress={() => onReadClick()}
+        style={styles.touchableButton}
+      >
         <Text style={styles.touchableButtonText}>Read More</Text>
       </TouchableOpacity>
     </View>

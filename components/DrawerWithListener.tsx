@@ -1,7 +1,7 @@
 import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigationContainerRef } from "expo-router";
+import { useNavigationContainerRef, useRouter } from "expo-router";
 import { Drawer } from "expo-router/drawer";
 import { useEffect, useRef } from "react";
 import { Dimensions, View } from "react-native";
@@ -11,10 +11,12 @@ const screenWidth = Dimensions.get("window").width;
 
 export default function DrawerWithListener() {
   const navigationRef = useNavigationContainerRef();
+  const router = useRouter();
   const prevRouteNameRef = useRef<string | undefined>(undefined);
 
   const {
     actions: { setSearchInput },
+    selectors: { postComingFrom },
   } = useGlobalState();
   const { clearToast } = useToast();
 
@@ -80,6 +82,31 @@ export default function DrawerWithListener() {
           })}
         />
       ))}
+
+      <Drawer.Screen
+        name="post/[id]"
+        options={{
+          drawerItemStyle: { height: 0 },
+          headerTitle: "Post Details",
+          headerLeft: () => (
+            <MaterialIcons
+              name="arrow-back"
+              size={32}
+              color="black"
+              style={{ marginLeft: 12, marginRight: 6 }}
+              onPress={() => {
+                if (postComingFrom === "my-posts") {
+                  router.push("/my-posts");
+                } else if (postComingFrom === "index") {
+                  router.push("/");
+                } else {
+                  router.push("/");
+                }
+              }}
+            />
+          ),
+        }}
+      />
     </Drawer>
   );
 }

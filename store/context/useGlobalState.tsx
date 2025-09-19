@@ -1,3 +1,4 @@
+import { Post, RoutesKey } from "@/types/commonTypes";
 import { useContext } from "react";
 import { GlobalStateContext } from "./Providers/GlobalStateContext";
 
@@ -16,6 +17,9 @@ export const useGlobalState = () => {
   const isLoading = state.isLoading;
   const user = state.user;
   const modalConfirmation = state.confirmationModal;
+  const postComingFrom = state.postComingFrom;
+  const allPosts = state.allPosts;
+  const myPosts = state.myPosts;
 
   // Actions
   const setSearchInput = (value: string) => {
@@ -39,6 +43,13 @@ export const useGlobalState = () => {
     }));
   };
 
+  const setPostComingFrom = (value: RoutesKey | null) => {
+    setState((prev) => ({
+      ...prev,
+      postComingFrom: value,
+    }));
+  };
+
   const setModalConfirmation = (
     isOpen: boolean,
     callback: () => void,
@@ -55,8 +66,38 @@ export const useGlobalState = () => {
     }));
   };
 
+  const setAllPosts = (posts: Post[]) => {
+    setState((prev) => ({
+      ...prev,
+      allPosts: posts,
+    }));
+  };
+
+  const setMyPosts = (posts: Post[]) => {
+    setState((prev) => ({
+      ...prev,
+      myPosts: posts,
+    }));
+  };
+
   return {
-    selectors: { searchInput, isLoading, user, modalConfirmation },
-    actions: { setSearchInput, setIsLoading, setUser, setModalConfirmation },
+    selectors: {
+      searchInput,
+      isLoading,
+      user,
+      modalConfirmation,
+      postComingFrom,
+      allPosts,
+      myPosts,
+    },
+    actions: {
+      setSearchInput,
+      setIsLoading,
+      setUser,
+      setModalConfirmation,
+      setPostComingFrom,
+      setAllPosts,
+      setMyPosts,
+    },
   };
 };

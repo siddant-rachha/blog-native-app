@@ -1,7 +1,9 @@
-import { Screens } from "@/types/commonTypes";
+import { Post, RoutesKey } from "@/types/commonTypes";
 import React, { createContext, ReactNode, useState } from "react";
 
 type GlobalState = {
+  allPosts: Post[];
+  myPosts: Post[];
   searchInput: string;
   isLoading: boolean;
   user: {
@@ -9,12 +11,12 @@ type GlobalState = {
     displayName: string;
     photoURL: string;
   } | null;
-  currentScreen?: Screens;
   confirmationModal: {
     isOpen: boolean;
     callback: () => void;
     message: string;
   };
+  postComingFrom: RoutesKey | null;
 };
 
 type GlobalStateContextType = {
@@ -36,6 +38,9 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
       callback: () => {},
       message: "Do you want to delete?",
     },
+    postComingFrom: null,
+    allPosts: [],
+    myPosts: [],
   });
 
   return (

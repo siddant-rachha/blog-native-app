@@ -9,12 +9,11 @@ export interface Post {
   writePermission: boolean;
 }
 
-export type Screens = "Home" | "MyPosts" | "CreatePost";
-
 export const Routes = {
   index: "Home" as const,
   "create-post": "CreatePost" as const,
   "my-posts": "MyPosts" as const,
+  "post/[id]": "Post" as const,
 };
 
 export type RoutesKey = keyof typeof Routes;
