@@ -15,6 +15,7 @@ type GlobalState = {
     isOpen: boolean;
     callback: () => void;
     message: string;
+    type: "delete" | "edit";
   };
   postComingFrom: RoutesKey | null;
 };
@@ -36,7 +37,8 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     confirmationModal: {
       isOpen: false,
       callback: () => {},
-      message: "Do you want to delete?",
+      message: "",
+      type: "delete",
     },
     postComingFrom: null,
     allPosts: [],

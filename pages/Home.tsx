@@ -80,6 +80,9 @@ export default function Home() {
           onDelete={() => {
             setModalConfirmation(true, () => deletePost(item.id));
           }}
+          onEdit={() => {
+            setModalConfirmation(true, () => {}, "edit");
+          }}
           onReadClick={() => {
             router.push({
               pathname: "/post/[id]",

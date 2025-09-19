@@ -53,14 +53,17 @@ export const useGlobalState = () => {
   const setModalConfirmation = (
     isOpen: boolean,
     callback: () => void,
-    message?: string
+    type: "delete" | "edit" = "delete"
   ) => {
+    const message =
+      type === "delete" ? "Do you want to delete?" : "Do you want to edit?";
     setState((prev) => ({
       ...prev,
       confirmationModal: {
         ...prev.confirmationModal,
         isOpen,
         callback,
+        type,
         ...(message ? { message } : {}),
       },
     }));

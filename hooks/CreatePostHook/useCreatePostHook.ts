@@ -120,8 +120,12 @@ export default function useCreatePostHook() {
         setMyPosts(updatedMyPosts);
         //
 
-        // navigate to home after promises are resolved
-        router.push("/my-posts");
+        // navigate to home if user not logged in else navigate to my-posts
+        if (user) {
+          router.push("/my-posts");
+        } else {
+          router.push("/");
+        }
       } catch (error) {
         console.log("Error creating post:", error);
         showToast("Something went wrong", "error");

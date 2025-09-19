@@ -8,10 +8,12 @@ export default function CardComponent({
   postItem,
   onDelete,
   onReadClick,
+  onEdit,
 }: {
   postItem: Post;
   onDelete: () => void;
   onReadClick: () => void;
+  onEdit: () => void;
 }) {
   return (
     <View style={styles.card}>
@@ -53,7 +55,7 @@ export default function CardComponent({
         {/* Edit and Delete button  */}
         {postItem.writePermission && (
           <View style={{ marginLeft: "auto", flexDirection: "row", gap: 16 }}>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => onEdit()}>
               <MaterialIcons name="edit" size={24} color={"#007BFF"} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => onDelete()}>

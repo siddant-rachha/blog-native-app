@@ -30,7 +30,11 @@ export const ConfirmationModal = () => {
               modalConfirmation.callback();
               setModalConfirmation(false, () => {});
             }}
-            style={styles.modalYesButton}
+            style={{
+              ...styles.modalYesButton,
+              backgroundColor:
+                modalConfirmation.type === "edit" ? "#007BFF" : "#FF5B5B",
+            }}
           >
             <Text style={{ color: "white" }}>Yes</Text>
           </TouchableOpacity>
@@ -77,7 +81,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   modalYesButton: {
-    backgroundColor: "#FF5B5B",
     padding: 10,
     borderRadius: 5,
     width: 50,

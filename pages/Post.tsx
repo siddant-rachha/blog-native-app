@@ -105,7 +105,7 @@ export default function PostComponent() {
   if (!post) return null;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} edges={["bottom"]}>
       <ScrollView contentContainerStyle={styles.container}>
         {/* image */}
         <Image
@@ -143,7 +143,11 @@ export default function PostComponent() {
             {/* Edit and Delete button  */}
             {post && post.writePermission && (
               <View style={styles.editDeleteContainer}>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalConfirmation(true, () => {}, "edit");
+                  }}
+                >
                   <MaterialIcons name="edit" size={24} color={"#007BFF"} />
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -180,10 +184,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    marginVertical: 24,
     paddingBottom: 24,
   },
   image: {
-    aspectRatio: 9 / 6,
+    width: "100%",
+    height: "auto",
+    aspectRatio: 16 / 9,
     borderRadius: 8,
     marginBottom: 12,
   },
@@ -192,7 +199,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     marginBottom: 12,
-    textAlign: "justify",
   },
   editDeleteContainer: {
     flexDirection: "row",
