@@ -121,7 +121,7 @@ export default function SearchResults() {
         bottom: 0,
         top: (searchResultsInfo.headerEndPosition || 100) + 8,
         display:
-          searchInput.length >= MIN_SEARCH_LENGTH && resultsView
+          searchInput.length >= MIN_SEARCH_LENGTH && (resultsView || loading)
             ? "flex"
             : "none",
       }}

@@ -28,7 +28,7 @@ export default function HeaderWithSearch({
   materialIcon: MaterialIconName;
 }) {
   const {
-    selectors: { searchInput, user, searchResultsInfo },
+    selectors: { searchInput, user },
     actions: { setSearchInput, setSearchResultsInfo },
   } = useGlobalState();
   const [showUserInfo, setShowUserInfo] = useState(false);
@@ -36,12 +36,6 @@ export default function HeaderWithSearch({
 
   const headerRef = useRef<View>(null);
   const inputRef = useRef<TextInput>(null);
-
-  useEffect(() => {
-    if (searchResultsInfo.isSearchFocus) {
-      inputRef.current?.focus();
-    }
-  }, [searchResultsInfo.isSearchFocus]);
 
   useEffect(() => {
     if (isDrawerOpen === "open") {

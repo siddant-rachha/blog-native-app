@@ -162,7 +162,15 @@ export default function MyPosts() {
       onEndReachedThreshold={0}
       ListFooterComponent={
         loadingMore ? (
-          <ActivityIndicator size="large" style={{ marginBottom: 36 }} />
+          <ActivityIndicator
+            size="large"
+            color="#007bff"
+            style={{
+              position: "relative",
+              zIndex: 1000,
+              top: -25,
+            }}
+          />
         ) : null
       }
     />

@@ -130,11 +130,19 @@ export default function Home() {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      onEndReached={fetchMorePosts}
+      onScrollEndDrag={fetchMorePosts}
       onEndReachedThreshold={0}
       ListFooterComponent={
         loadingMore ? (
-          <ActivityIndicator size="large" style={{ marginBottom: 36 }} />
+          <ActivityIndicator
+            size="large"
+            color="#007bff"
+            style={{
+              position: "relative",
+              zIndex: 1000,
+              top: -25,
+            }}
+          />
         ) : null
       }
     />
