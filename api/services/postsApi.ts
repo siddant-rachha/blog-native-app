@@ -1,4 +1,5 @@
 import { Post } from "@/types/commonTypes";
+import { imitateApi } from "@/utils/immitateApi";
 import axiosInstance from "../apiInstance/axiosInstance";
 
 interface GetAllPostsResponse {
@@ -7,9 +8,10 @@ interface GetAllPostsResponse {
 }
 
 export const postsApi = {
-  getAll: async (latest: boolean = true) => {
+  getAll: async (cursor: string | null, latest: boolean = true) => {
     const res = await axiosInstance.get<GetAllPostsResponse>(
-      `/getposts?latest=${latest}`
+      `/getposts?latest=${latest}&limit=3` +
+        (cursor ? `&cursorId=${cursor}` : "")
     );
     return res.data;
   },
@@ -21,9 +23,11 @@ export const postsApi = {
     return res.data;
   },
 
-  getMyPosts: async (latest: boolean = true) => {
+  getMyPosts: async (cursor: string | null, latest: boolean = true) => {
+    await imitateApi(1000);
     const res = await axiosInstance.get<GetAllPostsResponse>(
-      `/getposts?latest=${latest}&myposts=true`
+      `/getposts?latest=${latest}&myposts=true&limit=3` +
+        (cursor ? `&cursorId=${cursor}` : "")
     );
     return res.data;
   },

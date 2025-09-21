@@ -7,6 +7,7 @@ import { RoutesKey } from "@/types/commonTypes";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   RefreshControl,
   ScrollView,
@@ -23,17 +24,31 @@ export default function MyPosts() {
   } = useGlobalState();
   const { showToast } = useToast();
   const [refreshing, setRefreshing] = useState(false);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  const getMyPosts = async () => {
+  const fetchMorePosts = async () => {
+    if (!loadingMore && cursor) {
+      await getMyPosts(true, cursor);
+    }
+  };
+
+  const getMyPosts = async (append = false, cursorId: string | null) => {
     try {
-      setIsLoading(true);
-      const res = await postsApi.getMyPosts();
+      if (append) setLoadingMore(true);
+      else setIsLoading(true);
+      const res = await postsApi.getMyPosts(cursorId);
+      setCursor(res.posts.length ? res.posts[res.posts.length - 1].id : null);
       const posts = res.posts;
       posts.map((post) => {
         post.desc = post.desc.slice(0, 150) + "...";
       });
-      setMyPosts(posts);
-      if (currentScreen === "MyPosts") {
+      if (append) {
+        setMyPosts([...myPosts, ...posts]);
+      } else {
+        setMyPosts(posts);
+      }
+      if (currentScreen === "MyPosts" && !append) {
         showToast("My Posts fetched");
       }
     } catch (error) {
@@ -42,13 +57,14 @@ export default function MyPosts() {
         showToast("Something went wrong", "error");
       }
     } finally {
-      setIsLoading(false);
+      if (append) setLoadingMore(false);
+      else setIsLoading(false);
     }
   };
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await getMyPosts();
+    await getMyPosts(false, null);
     setRefreshing(false);
   };
 
@@ -72,7 +88,7 @@ export default function MyPosts() {
   };
 
   useEffect(() => {
-    if (user) getMyPosts();
+    if (user) getMyPosts(false, null);
   }, [user]);
 
   if (!user) {
@@ -141,6 +157,13 @@ export default function MyPosts() {
       contentContainerStyle={{ paddingBottom: 32 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      onEndReached={fetchMorePosts}
+      onEndReachedThreshold={0}
+      ListFooterComponent={
+        loadingMore ? (
+          <ActivityIndicator size="large" style={{ marginBottom: 36 }} />
+        ) : null
       }
     />
   );

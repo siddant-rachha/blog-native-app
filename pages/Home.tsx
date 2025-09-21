@@ -6,7 +6,12 @@ import { useGlobalState } from "@/store/context/useGlobalState";
 import { RoutesKey } from "@/types/commonTypes";
 import { useRouter } from "expo-router";
 import { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  RefreshControl,
+  StyleSheet,
+} from "react-native";
 
 export default function Home() {
   const router = useRouter();
@@ -17,17 +22,31 @@ export default function Home() {
   } = useGlobalState();
   const { showToast } = useToast();
   const [refreshing, setRefreshing] = useState(false);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [loadingMore, setLoadingMore] = useState(false);
 
-  const getAllPosts = async () => {
+  const fetchMorePosts = async () => {
+    if (!loadingMore && cursor) {
+      await getAllPosts(true, cursor);
+    }
+  };
+
+  const getAllPosts = async (append = false, cursorId: string | null) => {
     try {
-      setIsLoading(true);
-      const res = await postsApi.getAll();
-      const posts = res.posts;
-      posts.map((post) => {
-        post.desc = post.desc.slice(0, 150) + "...";
-      });
-      setAllPosts(posts);
-      if (currentScreen === "Home") {
+      if (append) setLoadingMore(true);
+      else setIsLoading(true);
+      const res = await postsApi.getAll(cursorId);
+      setCursor(res.posts.length ? res.posts[res.posts.length - 1].id : null);
+      const posts = res.posts.map((post) => ({
+        ...post,
+        desc: post.desc.slice(0, 150) + "...",
+      }));
+      if (append) {
+        setAllPosts([...allPosts, ...posts]);
+      } else {
+        setAllPosts(posts);
+      }
+      if (currentScreen === "Home" && !append) {
         showToast("Posts fetched");
       }
     } catch (error) {
@@ -36,7 +55,8 @@ export default function Home() {
         showToast("Something went wrong", "error");
       }
     } finally {
-      setIsLoading(false);
+      if (append) setLoadingMore(false);
+      else setIsLoading(false);
     }
   };
 
@@ -60,12 +80,12 @@ export default function Home() {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await getAllPosts();
+    await getAllPosts(false, null);
     setRefreshing(false);
   };
 
   useEffect(() => {
-    getAllPosts();
+    getAllPosts(false, null);
   }, [user]);
 
   return (
@@ -109,6 +129,13 @@ export default function Home() {
       contentContainerStyle={{ paddingBottom: 32 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      onEndReached={fetchMorePosts}
+      onEndReachedThreshold={0}
+      ListFooterComponent={
+        loadingMore ? (
+          <ActivityIndicator size="large" style={{ marginBottom: 36 }} />
+        ) : null
       }
     />
   );

@@ -38,6 +38,7 @@ axiosInstance.interceptors.response.use(
         response.config.url,
         response.data
       );
+      console.log("--------------------------------------------------");
     }
     return response;
   },
