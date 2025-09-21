@@ -134,62 +134,66 @@ export default function SearchResults() {
           )}
 
           {!apiFail && resultsView && (
-            <ScrollView
-              style={{
-                ...styles.searchResults,
-                maxHeight: windowHeight * 0.25,
-              }}
-              contentContainerStyle={{
-                paddingBottom: 12,
-                alignItems: "center",
-              }}
-            >
-              {searchResultsInfo.searchResults.map((post) => (
-                <TouchableOpacity
-                  key={post.id}
-                  style={{
-                    flexDirection: "row",
-                    borderBottomWidth: 1,
-                    borderBottomColor: "#eee",
-                    paddingVertical: 6,
-                    gap: 8,
-                  }}
-                  onPress={() => router.push(`/post/${post.id}`)}
-                >
-                  <View style={{ justifyContent: "center" }}>
-                    <Image
-                      source={
-                        post.imageUrl
-                          ? {
-                              uri: post.imageUrl,
-                            }
-                          : require("../assets/images/no-img.png")
-                      }
-                      style={{
-                        borderRadius: 8,
-                        display: "flex",
-                        height: 40,
-                        aspectRatio: 9 / 6,
-                      }}
-                      contentFit="contain"
-                      transition={1000}
-                    />
-                  </View>
-                  <View style={{ flex: 1, justifyContent: "center" }}>
-                    <Text style={{ fontWeight: "bold" }}>{post.title}</Text>
-                    <Text numberOfLines={2} ellipsizeMode="tail">
-                      {post.desc}...
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
+            <>
+              <ScrollView
+                style={{
+                  ...styles.searchResults,
+                  maxHeight: windowHeight * 0.25,
+                }}
+                contentContainerStyle={{
+                  paddingBottom: 12,
+                  alignItems: "center",
+                }}
+              >
+                {searchResultsInfo.searchResults.map((post) => (
+                  <TouchableOpacity
+                    key={post.id}
+                    style={{
+                      flexDirection: "row",
+                      borderBottomWidth: 1,
+                      borderBottomColor: "#eee",
+                      paddingVertical: 6,
+                      gap: 8,
+                    }}
+                    onPress={() => router.push(`/post/${post.id}`)}
+                  >
+                    <View style={{ justifyContent: "center" }}>
+                      <Image
+                        source={
+                          post.imageUrl
+                            ? {
+                                uri: post.imageUrl,
+                              }
+                            : require("../assets/images/no-img.png")
+                        }
+                        style={{
+                          borderRadius: 8,
+                          display: "flex",
+                          height: 40,
+                          aspectRatio: 9 / 6,
+                        }}
+                        contentFit="contain"
+                        transition={1000}
+                      />
+                    </View>
+                    <View style={{ flex: 1, justifyContent: "center" }}>
+                      <Text style={{ fontWeight: "bold", color: "#007BFF" }}>
+                        {post.title}
+                      </Text>
+                      <Text numberOfLines={2} ellipsizeMode="tail">
+                        {post.desc}...
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
               {searchResultsInfo.searchResults.length === 0 && (
-                <Text>
+                <Text style={{ zIndex: 1001, marginTop: 4 }}>
                   No results found for{" "}
                   <Text style={{ fontWeight: "bold" }}>{searchInput}</Text>
                 </Text>
               )}
-            </ScrollView>
+            </>
           )}
         </>
       )}
