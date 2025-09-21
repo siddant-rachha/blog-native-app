@@ -7,6 +7,7 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
+  Keyboard,
   ScrollView,
   StyleSheet,
   Text,
@@ -27,6 +28,21 @@ export default function SearchResults() {
     actions: { setSearchResultsInfo },
   } = useGlobalState();
   const router = useRouter();
+
+  const [keyboardActive, setKeyboardActive] = useState(false);
+
+  useEffect(() => {
+    const showSub = Keyboard.addListener("keyboardDidShow", () =>
+      setKeyboardActive(true)
+    );
+    const hideSub = Keyboard.addListener("keyboardDidHide", () =>
+      setKeyboardActive(false)
+    );
+    return () => {
+      showSub.remove();
+      hideSub.remove();
+    };
+  }, []);
 
   // states for search feature ------
   const [resultsView, setResultsView] = useState(false);
@@ -92,6 +108,8 @@ export default function SearchResults() {
   }, [resultsView, searchResultsInfo.hide]);
 
   return (
+    // {/* dont show entire block when searchInput is less than min */}
+
     <View
       style={{
         flex: 1,
@@ -101,99 +119,98 @@ export default function SearchResults() {
         left: 0,
         right: 0,
         bottom: 0,
-        pointerEvents: "box-none",
         top: (searchResultsInfo.headerEndPosition || 100) + 8,
+        display: searchInput.length >= MIN_SEARCH_LENGTH ? "flex" : "none",
       }}
     >
-      {/* dont show entire block when searchInput is less than min */}
-      {searchInput.length >= MIN_SEARCH_LENGTH && (
+      <TouchableOpacity
+        style={{
+          ...styles.searchOverLay,
+          // show overlay only when loading is true or resultsView is true
+          display: loading || resultsView ? "flex" : "none",
+        }}
+        onPress={() => {
+          if (keyboardActive) {
+            Keyboard.dismiss();
+          } else {
+            setResultsView(false);
+            setLoading(false);
+            setSearchResultsInfo({ isSearchFocus: false });
+          }
+        }}
+      />
+
+      {loading && (
+        <View
+          style={{
+            ...styles.searchResults,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ActivityIndicator size="small" color="#0000ff" />
+        </View>
+      )}
+
+      {!apiFail && resultsView && (
         <>
-          <TouchableOpacity
+          <ScrollView
             style={{
-              ...styles.searchOverLay,
-              // show overlay only when loading is true or resultsView is true
-              display: loading || resultsView ? "flex" : "none",
+              ...styles.searchResults,
+              maxHeight: windowHeight * 0.25,
             }}
-            onPress={() => {
-              setResultsView(false);
-              setLoading(false);
-              setSearchResultsInfo({ isSearchFocus: false });
+            contentContainerStyle={{
+              paddingBottom: 12,
+              alignItems: "center",
             }}
-          />
-
-          {loading && (
-            <View
-              style={{
-                ...styles.searchResults,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ActivityIndicator size="small" color="#0000ff" />
-            </View>
-          )}
-
-          {!apiFail && resultsView && (
-            <>
-              <ScrollView
+          >
+            {searchResultsInfo.searchResults.map((post) => (
+              <TouchableOpacity
+                key={post.id}
                 style={{
-                  ...styles.searchResults,
-                  maxHeight: windowHeight * 0.25,
+                  flexDirection: "row",
+                  borderBottomWidth: 1,
+                  borderBottomColor: "#eee",
+                  paddingVertical: 6,
+                  gap: 8,
                 }}
-                contentContainerStyle={{
-                  paddingBottom: 12,
-                  alignItems: "center",
-                }}
+                onPress={() => router.push(`/post/${post.id}`)}
               >
-                {searchResultsInfo.searchResults.map((post) => (
-                  <TouchableOpacity
-                    key={post.id}
+                <View style={{ justifyContent: "center" }}>
+                  <Image
+                    source={
+                      post.imageUrl
+                        ? {
+                            uri: post.imageUrl,
+                          }
+                        : require("../assets/images/no-img.png")
+                    }
                     style={{
-                      flexDirection: "row",
-                      borderBottomWidth: 1,
-                      borderBottomColor: "#eee",
-                      paddingVertical: 6,
-                      gap: 8,
+                      borderRadius: 8,
+                      display: "flex",
+                      height: 40,
+                      aspectRatio: 9 / 6,
                     }}
-                    onPress={() => router.push(`/post/${post.id}`)}
-                  >
-                    <View style={{ justifyContent: "center" }}>
-                      <Image
-                        source={
-                          post.imageUrl
-                            ? {
-                                uri: post.imageUrl,
-                              }
-                            : require("../assets/images/no-img.png")
-                        }
-                        style={{
-                          borderRadius: 8,
-                          display: "flex",
-                          height: 40,
-                          aspectRatio: 9 / 6,
-                        }}
-                        contentFit="contain"
-                        transition={1000}
-                      />
-                    </View>
-                    <View style={{ flex: 1, justifyContent: "center" }}>
-                      <Text style={{ fontWeight: "bold", color: "#007BFF" }}>
-                        {post.title}
-                      </Text>
-                      <Text numberOfLines={2} ellipsizeMode="tail">
-                        {post.desc}...
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </ScrollView>
-              {searchResultsInfo.searchResults.length === 0 && (
-                <Text style={{ zIndex: 1001, marginTop: 4 }}>
-                  No results found for{" "}
-                  <Text style={{ fontWeight: "bold" }}>{searchInput}</Text>
-                </Text>
-              )}
-            </>
+                    contentFit="contain"
+                    transition={1000}
+                  />
+                </View>
+                <View style={{ flex: 1, justifyContent: "center" }}>
+                  <Text style={{ fontWeight: "bold", color: "#007BFF" }}>
+                    {post.title}
+                  </Text>
+                  <Text numberOfLines={2} ellipsizeMode="tail">
+                    {post.desc}...
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+          {searchResultsInfo.searchResults.length === 0 && (
+            <Text style={{ zIndex: 1001, marginTop: 4 }}>
+              No results found for{" "}
+              <Text style={{ fontWeight: "bold" }}>{searchInput}</Text>
+            </Text>
           )}
         </>
       )}
