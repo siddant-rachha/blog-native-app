@@ -120,7 +120,10 @@ export default function SearchResults() {
         right: 0,
         bottom: 0,
         top: (searchResultsInfo.headerEndPosition || 100) + 8,
-        display: searchInput.length >= MIN_SEARCH_LENGTH ? "flex" : "none",
+        display:
+          searchInput.length >= MIN_SEARCH_LENGTH && resultsView
+            ? "flex"
+            : "none",
       }}
     >
       <TouchableOpacity
