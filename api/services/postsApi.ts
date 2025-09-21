@@ -33,6 +33,13 @@ export const postsApi = {
     return res.data;
   },
 
+  searchPosts: async (query: string) => {
+    const res = await axiosInstance.post<GetAllPostsResponse>(`/searchposts`, {
+      query,
+    });
+    return res.data;
+  },
+
   createPost: async ({
     title,
     desc,

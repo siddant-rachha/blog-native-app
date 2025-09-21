@@ -19,6 +19,13 @@ type GlobalState = {
     type: "delete" | "edit";
   };
   postComingFrom: RoutesKey | null;
+  searchResultsInfo: {
+    headerEndPosition?: number;
+    searchResults: Post[];
+    MIN_SEARCH_LENGTH?: 3;
+    isSearchFocus?: boolean;
+    hide: boolean;
+  };
 };
 
 type GlobalStateContextType = {
@@ -45,6 +52,12 @@ export const GlobalStateProvider = ({ children }: { children: ReactNode }) => {
     allPosts: [],
     myPosts: [],
     post: null,
+    searchResultsInfo: {
+      searchResults: [],
+      MIN_SEARCH_LENGTH: 3,
+      isSearchFocus: false,
+      hide: false,
+    },
   });
 
   return (

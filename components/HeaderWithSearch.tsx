@@ -2,8 +2,9 @@ import { useGlobalState } from "@/store/context/useGlobalState";
 import { signInWithGoogle } from "@/utils/google-auth/signInWithGoogle";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getAuth, signOut } from "@react-native-firebase/auth";
+import { useDrawerStatus } from "@react-navigation/drawer";
 import { Image } from "expo-image";
-import { ComponentProps, useState } from "react";
+import { ComponentProps, useEffect, useRef, useState } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -27,12 +28,39 @@ export default function HeaderWithSearch({
   materialIcon: MaterialIconName;
 }) {
   const {
-    selectors: { searchInput, user },
-    actions: { setSearchInput },
+    selectors: { searchInput, user, searchResultsInfo },
+    actions: { setSearchInput, setSearchResultsInfo },
   } = useGlobalState();
   const [showUserInfo, setShowUserInfo] = useState(false);
+  const isDrawerOpen = useDrawerStatus();
+
+  const headerRef = useRef<View>(null);
+  const inputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    if (searchResultsInfo.isSearchFocus) {
+      inputRef.current?.focus();
+    }
+  }, [searchResultsInfo.isSearchFocus]);
+
+  useEffect(() => {
+    if (isDrawerOpen === "open") {
+      setSearchResultsInfo({ hide: true });
+    } else {
+      setSearchResultsInfo({ hide: false });
+    }
+  }, [isDrawerOpen]);
+
   return (
-    <View style={styles.headerContainer}>
+    <View
+      ref={headerRef}
+      style={styles.headerContainer}
+      onLayout={() => {
+        headerRef.current?.measure((fx, fy, width, height, px, py) => {
+          setSearchResultsInfo({ headerEndPosition: height + py });
+        });
+      }}
+    >
       {/* Header Title */}
       <Text style={styles.headerTitle}>{title}</Text>
 
@@ -46,11 +74,20 @@ export default function HeaderWithSearch({
 
       {/* Search Input */}
       <TextInput
+        ref={inputRef}
         value={searchInput}
-        onChangeText={setSearchInput}
+        onChangeText={(text) => {
+          setSearchInput(text);
+        }}
         style={styles.searchInput}
-        placeholder="Search..."
+        placeholder="Search min 3 chars..."
         placeholderTextColor={"#888"}
+        onPressIn={() => {
+          setSearchResultsInfo({ isSearchFocus: true });
+        }}
+        onPressOut={() => {
+          setSearchResultsInfo({ isSearchFocus: false });
+        }}
       />
 
       {/* Login Button */}
@@ -161,6 +198,45 @@ const styles = StyleSheet.create({
   userInfoOverlay: {
     position: "absolute",
     top: -windowHeight / 2,
+    left: -windowWidth / 2,
+    right: 0,
+    bottom: 0,
+    height: windowHeight * 2,
+    width: windowWidth * 2,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    zIndex: 999,
+    opacity: 0.5,
+    // Shadow for iOS
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    // Elevation for Android
+    elevation: 5,
+  },
+  searchResults: {
+    position: "absolute",
+    top: "125%",
+    right: 0,
+    zIndex: 1000,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 8,
+    // Shadow for iOS
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    // Elevation for Android
+    elevation: 5,
+    width: windowWidth - 24,
+  },
+  searchOverLay: {
+    position: "absolute",
+    // top: -windowHeight / 2,
+    top: "125%",
     left: -windowWidth / 2,
     right: 0,
     bottom: 0,
