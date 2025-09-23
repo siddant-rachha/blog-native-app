@@ -1,5 +1,6 @@
 import { postsApi } from "@/api/services/postsApi";
 import CardComponent from "@/components/CardComponent";
+import Dropdown from "@/components/DropdownComponent";
 import { useGetScreen } from "@/hooks/useGetScreen";
 import { useToast } from "@/hooks/useToast";
 import { useGlobalState } from "@/store/context/useGlobalState";
@@ -19,25 +20,30 @@ export default function MyPosts() {
   const { currentScreen } = useGetScreen();
   const router = useRouter();
   const {
-    selectors: { user, myPosts, allPosts },
+    selectors: { user, myPosts, allPosts, isLoading },
     actions: { setIsLoading, setModalConfirmation, setMyPosts, setAllPosts },
   } = useGlobalState();
   const { showToast } = useToast();
   const [refreshing, setRefreshing] = useState(false);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
+  const [sortOrder, setSortOrder] = useState<"Latest" | "Oldest">("Latest");
 
   const fetchMorePosts = async () => {
     if (!loadingMore && cursor) {
-      await getMyPosts(true, cursor);
+      await getMyPosts(true, cursor, sortOrder);
     }
   };
 
-  const getMyPosts = async (append = false, cursorId: string | null) => {
+  const getMyPosts = async (
+    append = false,
+    cursorId: string | null,
+    value: "Latest" | "Oldest"
+  ) => {
     try {
       if (append) setLoadingMore(true);
       else setIsLoading(true);
-      const res = await postsApi.getMyPosts(cursorId);
+      const res = await postsApi.getMyPosts(cursorId, value === "Latest");
       setCursor(res.posts.length ? res.posts[res.posts.length - 1].id : null);
       const posts = res.posts;
       posts.map((post) => {
@@ -64,7 +70,7 @@ export default function MyPosts() {
 
   const onRefresh = async () => {
     setRefreshing(true);
-    await getMyPosts(false, null);
+    await getMyPosts(false, null, sortOrder);
     setRefreshing(false);
   };
 
@@ -87,8 +93,14 @@ export default function MyPosts() {
     }
   };
 
+  const onDropdownChange = (value: "Latest" | "Oldest") => {
+    if (value === sortOrder) return;
+    setSortOrder(value);
+    getMyPosts(false, null, value);
+  };
+
   useEffect(() => {
-    if (user) getMyPosts(false, null);
+    if (user) getMyPosts(false, null, sortOrder);
   }, [user]);
 
   if (!user) {
@@ -99,7 +111,7 @@ export default function MyPosts() {
     );
   }
 
-  if (myPosts.length === 0) {
+  if (myPosts.length === 0 && !isLoading) {
     return (
       <ScrollView
         contentContainerStyle={{
@@ -160,6 +172,17 @@ export default function MyPosts() {
       }
       onEndReached={fetchMorePosts}
       onEndReachedThreshold={0}
+      ListHeaderComponent={
+        <Dropdown
+          items={[
+            { label: "Latest", value: "Latest" },
+            { label: "Oldest", value: "Oldest" },
+          ]}
+          value={sortOrder}
+          onValueChange={onDropdownChange}
+          style={{ marginBottom: 16 }}
+        />
+      }
       ListFooterComponent={
         loadingMore ? (
           <ActivityIndicator

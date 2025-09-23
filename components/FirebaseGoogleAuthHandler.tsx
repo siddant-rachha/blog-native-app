@@ -25,7 +25,7 @@ export default function FirebaseGoogleAuthHandler() {
         photoURL: firebaseUser.photoURL,
       });
       firebaseUser.getIdToken().then((token) => {
-        secureTokenManager.setToken(token);
+        if (token) secureTokenManager.setToken(token);
       });
     } else {
       setUser(null);
