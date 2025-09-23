@@ -122,8 +122,10 @@ export default function useCreatePostHook() {
 
         // fetch all posts and my posts in parallel
         const [allPosts, myPosts] = await Promise.all([
-          postsApi.getAll(),
-          user ? postsApi.getMyPosts() : Promise.resolve({ posts: [] }),
+          postsApi.getAll(null, true),
+          user
+            ? postsApi.getMyPosts(null, true)
+            : Promise.resolve({ posts: [] }),
         ]);
         const updatedAllPosts = allPosts.posts.map((post) => {
           if (post.desc.length > 150) {

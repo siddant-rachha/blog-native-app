@@ -28,6 +28,7 @@ export default function MyPosts() {
   const [cursor, setCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [sortOrder, setSortOrder] = useState<"Latest" | "Oldest">("Latest");
+  const [hasError, setHasError] = useState(false);
 
   const fetchMorePosts = async () => {
     if (!loadingMore && cursor) {
@@ -41,6 +42,7 @@ export default function MyPosts() {
     value: "Latest" | "Oldest"
   ) => {
     try {
+      setHasError(false);
       if (append) setLoadingMore(true);
       else setIsLoading(true);
       const res = await postsApi.getMyPosts(cursorId, value === "Latest");
@@ -57,7 +59,9 @@ export default function MyPosts() {
       if (currentScreen === "MyPosts" && !append) {
         showToast("My Posts fetched");
       }
+      setSortOrder(value);
     } catch (error) {
+      setHasError(true);
       console.log("Error fetching posts:", error);
       if (currentScreen === "MyPosts") {
         showToast("Something went wrong", "error");
@@ -95,7 +99,6 @@ export default function MyPosts() {
 
   const onDropdownChange = (value: "Latest" | "Oldest") => {
     if (value === sortOrder) return;
-    setSortOrder(value);
     getMyPosts(false, null, value);
   };
 
@@ -111,7 +114,7 @@ export default function MyPosts() {
     );
   }
 
-  if (myPosts.length === 0 && !isLoading) {
+  if (myPosts.length === 0 && !isLoading && !hasError) {
     return (
       <ScrollView
         contentContainerStyle={{
@@ -123,6 +126,23 @@ export default function MyPosts() {
       >
         <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
           No posts created yet.
+        </Text>
+      </ScrollView>
+    );
+  }
+
+  if (hasError) {
+    return (
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
+          Something went wrong. Pull down to refresh.
         </Text>
       </ScrollView>
     );
@@ -180,7 +200,7 @@ export default function MyPosts() {
           ]}
           value={sortOrder}
           onValueChange={onDropdownChange}
-          style={{ marginBottom: 16 }}
+          style={{ marginBottom: 16, width: "50%" }}
         />
       }
       ListFooterComponent={

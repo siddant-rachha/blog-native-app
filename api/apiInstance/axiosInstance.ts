@@ -21,7 +21,8 @@ axiosInstance.interceptors.request.use(
         config.method,
         config.url,
         config.data,
-        config.headers.Authorization ? "✅" : "❌"
+        config.headers.Authorization?.toString().slice(0, 20) + "..." ||
+          "No Token"
       );
     }
     return config;

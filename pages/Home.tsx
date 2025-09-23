@@ -11,7 +11,9 @@ import {
   ActivityIndicator,
   FlatList,
   RefreshControl,
+  ScrollView,
   StyleSheet,
+  Text,
 } from "react-native";
 
 export default function Home() {
@@ -26,6 +28,7 @@ export default function Home() {
   const [cursor, setCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
   const [sortOrder, setSortOrder] = useState<"Latest" | "Oldest">("Latest");
+  const [hasError, setHasError] = useState(false);
 
   const fetchMorePosts = async () => {
     if (!loadingMore && cursor) {
@@ -39,6 +42,7 @@ export default function Home() {
     value: "Latest" | "Oldest"
   ) => {
     try {
+      setHasError(false);
       if (append) setLoadingMore(true);
       else setIsLoading(true);
       const res = await postsApi.getAll(cursorId, value === "Latest");
@@ -55,7 +59,9 @@ export default function Home() {
       if (currentScreen === "Home" && !append) {
         showToast("Posts fetched");
       }
+      setSortOrder(value);
     } catch (error) {
+      setHasError(true);
       console.log("Error fetching posts:", error);
       if (currentScreen === "Home") {
         showToast("Something went wrong", "error");
@@ -92,13 +98,29 @@ export default function Home() {
 
   const onDropdownChange = (value: "Latest" | "Oldest") => {
     if (value === sortOrder) return;
-    setSortOrder(value);
     getAllPosts(false, null, value);
   };
 
   useEffect(() => {
     getAllPosts(false, null, sortOrder);
   }, [user]);
+
+  if (hasError) {
+    return (
+      <ScrollView
+        contentContainerStyle={{
+          flex: 1,
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <Text style={{ textAlign: "center", marginTop: 32, fontSize: 18 }}>
+          Something went wrong. Pull down to refresh.
+        </Text>
+      </ScrollView>
+    );
+  }
 
   return (
     <FlatList
@@ -152,7 +174,7 @@ export default function Home() {
           ]}
           value={sortOrder}
           onValueChange={onDropdownChange}
-          style={{ marginBottom: 16 }}
+          style={{ marginBottom: 16, width: "50%" }}
         />
       }
       ListFooterComponent={
